@@ -16,16 +16,14 @@ export interface BookCardProps {
   onCategoryChange?: (newCategory: string) => void;
 }
 
-export default function BookCard({ book, onCategoryChange }: BookCardProps) {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
+export default function BookCard({ book }: BookCardProps) {
   const coverImageUrl = book.coverImageUrl ?? "/placeholder_book.png";
 
   return (
     <div className="relative flex items-start gap-3 p-4 bg-white rounded-xl shadow-md border hover:shadow-lg transition">
       {/* Mjesto za CategoryDropdown u gornjem desnom kutu */}
       <div className="absolute top-3 right-3 z-10">
-        <CategoryDropdown bookId={book.id} variant="icon"/>
+        <CategoryDropdown bookId={book.id} variant="icon" />
       </div>
 
       <Link href={`/books/${book.id}`} className="flex-shrink-0 cursor-pointer">
@@ -39,7 +37,8 @@ export default function BookCard({ book, onCategoryChange }: BookCardProps) {
       <div className="flex flex-col flex-1">
         <Link
           href={`/books/${book.id}`}
-          className="text-lg md:text-xl font-semibold text-gray-900 hover:text-[#593E2E] hover:underline cursor-pointer"
+          className="text-lg md:text-xl font-semibold text-gray-900 hover:text-[#593E2E] hover:underline cursor-pointer break-words max-w-[170px] md:max-w-[280px] truncate"
+          style={{ wordBreak: "break-word" }}
         >
           {book.title}
         </Link>
@@ -52,11 +51,15 @@ export default function BookCard({ book, onCategoryChange }: BookCardProps) {
             by {book.authorName}
           </Link>
         ) : book.authorName ? (
-          <p className="text-sm text-gray-700 mt-1 mb-1">by {book.authorName}</p>
+          <p className="text-sm text-gray-700 mt-1 mb-1">
+            by {book.authorName}
+          </p>
         ) : null}
 
         {book.description && (
-          <p className="text-sm text-gray-600 line-clamp-2">{book.description}</p>
+          <p className="text-sm text-gray-600 line-clamp-2">
+            {book.description}
+          </p>
         )}
       </div>
     </div>

@@ -30,7 +30,7 @@ export default function ItemGrid({
   moreLink,
   moreLabel = "More",
   title,
-  columns = 3,
+  columns,
 }: ItemGridProps) {
   const displayedItems = items.slice(0, maxDisplay);
 
@@ -39,7 +39,7 @@ export default function ItemGrid({
     url?.startsWith("//") ? `https:${url}` : url;
 
   return (
-    <div className="mb-10">
+    <div className="">
       <h2 className="text-xl font-bold mb-4 text-[#593e2e]">{title}</h2>
       {displayedItems.length === 0 ? (
         <p className="text-gray-600 mt-2">No {itemType} available.</p>

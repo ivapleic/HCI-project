@@ -54,9 +54,9 @@ div, section, article, main {
   padding-block: 1rem;
 
 }
-main {
+/* main {
   padding-right: 1rem;
-}
+} */
 
 .scroller[data-animated="true"] {
   margin-right:2rem;

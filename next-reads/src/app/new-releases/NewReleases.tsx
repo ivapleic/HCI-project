@@ -51,9 +51,13 @@ const NewReleasesList = () => {
 
         filteredBooks.sort((a, b) => {
           const yearB =
-            typeof b.fields.publicationYear === "number" ? b.fields.publicationYear : 0;
+            typeof b.fields.publicationYear === "number"
+              ? b.fields.publicationYear
+              : 0;
           const yearA =
-            typeof a.fields.publicationYear === "number" ? a.fields.publicationYear : 0;
+            typeof a.fields.publicationYear === "number"
+              ? a.fields.publicationYear
+              : 0;
           return yearB - yearA;
         });
 
@@ -92,13 +96,29 @@ const NewReleasesList = () => {
     setPage(newPage);
   };
 
-  return (
-    <div className="md:max-w-[1200px] md:mx-auto p-0 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-10">
-        <div className="w-full md:col-span-2 space-y-4 bg-white p-0 md:p-6 rounded-none md:rounded-lg shadow-none md:shadow-md border-none md:border mb-4">
-          <h2 className="text-2xl font-bold mb-4 text-[#593e2e] px-4 md:px-0 pt-4 md:pt-0">
-            New Releases
-          </h2>
+return (
+  <div
+    id="page-top"
+    className="
+      w-full
+      mt-4
+      mb-4
+      xs:px-0
+      md:px-10
+      xs:mx-0
+      md:mx-auto
+      md:max-w-[1200px]
+      flex
+      justify-center
+    "
+  >
+    <div className="grid xs:grid-cols-1 md:grid-cols-[2.5fr_1fr] gap-10 justify-center mx-auto md:justify-normal w-full">
+      {/* Glavni sadržaj sa suženom širinom */}
+     <div className=" bg-white p-6 rounded-lg shadow-md border">
+        <h2 className="text-2xl font-bold mb-2 text-[#593e2e]">
+          New Releases
+        </h2>
+        <div className="space-y-6 xs:p-2 md:p-4 flex-1 min-w-0">
           {displayedBooks.map((book: any) => (
             <BookCard
               key={book.sys.id}
@@ -119,15 +139,18 @@ const NewReleasesList = () => {
             onPageChange={handlePageChange}
           />
         </div>
+      </div>
 
-        <div className="flex justify-center md:justify-start mb-4">
-          <div className="w-full md:w-auto">
-            <GenresList genres={genres} />
-          </div>
+      {/* Sidebar sa maksimalnom širinom */}
+      <div className="flex justify-center md:justify-start">
+        <div className="w-full md:w-auto max-w-[320px]">
+          <GenresList genres={genres} />
         </div>
       </div>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default NewReleasesList;

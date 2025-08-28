@@ -27,7 +27,7 @@ export default function Pagination({
         className={`px-4 py-2 rounded-md ${
           currentPage === 1
             ? "bg-gray-300 cursor-not-allowed"
-            : "bg-[#593E2E] text-white hover:bg-[#8C6954]"
+            : "bg-[#593E2E] text-white hover:bg-[#8C6954] cursor-pointer"
         }`}
       >
         Previous
@@ -39,9 +39,10 @@ export default function Pagination({
           onClick={() => onPageChange(i + 1)}
           className={`px-4 py-2 rounded-md ${
             currentPage === i + 1
-              ? "bg-[#593E2E] text-white"
-              : "bg-gray-100 hover:bg-gray-200"
+              ? "bg-[#593E2E] text-white cursor-default"
+              : "bg-gray-100 hover:bg-gray-200 cursor-pointer"
           }`}
+          disabled={currentPage === i + 1}
         >
           {i + 1}
         </button>
@@ -53,7 +54,7 @@ export default function Pagination({
         className={`px-4 py-2 rounded-md ${
           currentPage === totalPages
             ? "bg-gray-300 cursor-not-allowed"
-            : "bg-[#593E2E] text-white hover:bg-[#8C6954]"
+            : "bg-[#593E2E] text-white hover:bg-[#8C6954] cursor-pointer"
         }`}
       >
         Next

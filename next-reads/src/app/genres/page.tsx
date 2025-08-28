@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getGenreList, getBooks } from "./_lib/genresApi";
 import GenresList from "../components/GenresList/GenresList";
+import Pagination from "../components/Pagination/Pagination";
 
 const GenresPage = () => {
   const [genres, setGenres] = useState<any[]>([]);
@@ -125,7 +126,7 @@ const GenresPage = () => {
 
             <div className="space-y-8">
               {displayedGenres.map((genre, index) => (
-                <div key={index} className="border-b pb-6">
+                <div key={index} className="border-b">
                   <h3
                     className="text-xl font-bold text-[#593E2E] mb-2 cursor-pointer hover:underline"
                     onClick={() =>
@@ -174,33 +175,12 @@ const GenresPage = () => {
               ))}
             </div>
 
-            <div className="flex justify-center space-x-4 mt-6 flex-wrap">
-              <button
-                onClick={() => setPage(page - 1)}
-                disabled={page === 1}
-                className={`px-3 py-1 rounded-md ${
-                  page === 1
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-[#593E2E] text-white hover:bg-[#8C6954]"
-                } text-xs sm:text-sm`}
-              >
-                Previous
-              </button>
-              <span className="text-gray-700 font-semibold flex items-center justify-center text-xs sm:text-sm whitespace-nowrap">
-                Page {page} of {totalPages}
-              </span>
-              <button
-                onClick={() => setPage(page + 1)}
-                disabled={page === totalPages}
-                className={`px-3 py-1 rounded-md ${
-                  page === totalPages
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-[#593E2E] text-white hover:bg-[#8C6954]"
-                } text-xs sm:text-sm`}
-              >
-                Next
-              </button>
-            </div>
+            <Pagination
+              totalItems={genres.length}
+              itemsPerPage={itemsPerPage}
+              currentPage={page}
+              onPageChange={setPage}
+            />
           </div>
 
           <div className="flex justify-center md:justify-start">

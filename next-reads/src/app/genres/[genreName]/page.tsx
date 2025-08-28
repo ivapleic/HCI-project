@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
-import { getGenreList } from "../_lib/genresApi";
 import { useState, useEffect } from "react";
-import { getBooks } from "../_lib/genresApi";
+import { getGenreList, getBooks } from "../_lib/genresApi";
 import { getLists } from "../../lists/_lib/ListApi";
 import ItemGrid from "../../components/ItemGrid/ItemGrid";
 import GenresList from "../../components/GenresList/GenresList";
@@ -28,7 +27,6 @@ export default function GenrePage() {
         const genresData = await getGenreList();
         setGenres(genresData || []);
 
-        // Normalizacija za usporedbu
         const normalizedGenreName = genreName.toLowerCase().replace(/-/g, " ");
 
         const genreData = genresData.find(
@@ -126,7 +124,7 @@ export default function GenrePage() {
 
               {/* New Releases Section */}
               <div className="mb-10">
-                <h2 className="text-xl font-bold mb-4 text-[#593e2e] cursor-pointer">
+                <h2 className="text-xl font-bold mb-4 text-[#593e2e] cursor-pointer hover:underline">
                   <Link href={`/new-releases?genre=${genreName}`}>
                     New Releases
                   </Link>
@@ -160,7 +158,7 @@ export default function GenrePage() {
                             <img
                               src={book.fields.coverImage.fields.file.url}
                               alt={book.fields.title}
-                              className="object-cover rounded-md aspect-[0.7] w-[90px] md:w-auto cursor-pointer"
+                              className="object-cover rounded-md aspect-[0.7] w-[90px] md:w-auto cursor-pointer hover:opacity-80 transition-opacity duration-300"
                             />
                           </Link>
                         ))}
@@ -190,7 +188,7 @@ export default function GenrePage() {
 
               {/* Lists under this Genre */}
               <div className="mb-10">
-                <h2 className="text-xl font-bold mb-4 text-[#593e2e]">
+                <h2 className="text-xl font-bold mb-4 text-[#593e2e] cursor-pointer hover:underline">
                   <Link href={`/tags/${genreName.toLowerCase()}`}>
                     Lists with this genre
                   </Link>
@@ -198,15 +196,20 @@ export default function GenrePage() {
 
                 {filteredLists.length > 0 ? (
                   <>
-                    <ItemGrid
-                      items={filteredLists}
-                      itemType="lists"
-                      maxDisplay={6}
-                      columns={2}
-                      moreLink={`/tags/${genreName.toLowerCase()}`}
-                      moreLabel="More lists with this genre"
-                      title="" 
-                    />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {filteredLists.slice(0, 6).map((list: any) => (
+                        <ItemGrid
+                          key={list.sys.id}
+                          items={[list]}
+                          itemType="lists"
+                          maxDisplay={1}
+                          moreLink={`/tags/${genreName.toLowerCase()}`}
+                          moreLabel="More lists with this genre"
+                          title=""
+                        />
+                      ))}
+                    </div>
+
                     {filteredLists.length > 6 && (
                       <div className="flex justify-end mt-2">
                         <Link
@@ -228,7 +231,7 @@ export default function GenrePage() {
 
               {/* Books of Genre */}
               <div className="mb-10">
-                <h2 className="text-xl font-bold mb-4 text-[#593e2e]">
+                <h2 className="text-xl font-bold mb-4 text-[#593e2e] cursor-pointer hover:underline">
                   <Link href={`/books?genre=${genreName}`}>
                     Books of this Genre
                   </Link>
@@ -263,7 +266,6 @@ export default function GenrePage() {
                   )}
                 </div>
               </div>
-
             </div>
 
             {/* Right div - genres list sidebar */}

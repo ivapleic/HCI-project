@@ -141,7 +141,7 @@ const HomePage = () => {
       </div>
 
       {/* Genre list */}
-      <div className="w-full max-w-screen-2xl py-6 my-6 border-b-[0.5px] border-[#F2CAB3]">
+      <div className="w-full max-w-screen-2xl py-2 my-2 border-b-[0.5px] border-[#F2CAB3]">
         <p className="text-3xl text-[#593E2E] tracking-tight text-left mb-8">
           Browse books by your favourite genre
         </p>
