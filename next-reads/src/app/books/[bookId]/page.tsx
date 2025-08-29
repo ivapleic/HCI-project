@@ -40,11 +40,6 @@ const BookDetailPage = () => {
     fetchData();
   }, [bookId]);
 
-  // Toggle dropdown open/close
-  function toggleDropdown() {
-    setDropdownOpen((open) => !open);
-  }
-
   if (loading) return <div className="text-center">Loading...</div>;
   if (!book)
     return <div className="text-center text-red-500">Book not found</div>;
@@ -53,9 +48,9 @@ const BookDetailPage = () => {
 
   return (
     <>
-   {/* MOBILE LAYOUT */}
-    <div className="block md:hidden max-w-md mx-auto bg-white rounded-lg shadow-md px-4">
-            <div className="flex flex-col items-center">
+      {/* MOBILE LAYOUT — prikazuje se samo ispod sm (640px) */}
+      <div className="xs:block xs:bg-green-300 md:hidden max-w-md mx-auto rounded-lg sm:bg-white shadow-md p-4">
+        <div className="flex flex-col items-center mt-10">
           <img
             src={fields.coverImage?.fields.file.url}
             alt={fields.title}
@@ -123,7 +118,6 @@ const BookDetailPage = () => {
           ) : (
             <div>Invalid Book ID</div>
           )}
-         
         </div>
 
         <div className="w-full">
@@ -149,11 +143,53 @@ const BookDetailPage = () => {
             </button>
           )}
         </div>
+        {/* Genres */}
+        <div className="mt-10">
+          <h2 className="font-semibold text-left">Genres</h2>
+          <div className="flex gap-2 flex-wrap">
+            {fields.genre?.map((genre: any) => (
+              <Link
+                key={genre.sys.id}
+                href={`/genres/${genre.fields.name.toLowerCase()}`}
+                className="bg-gray-200 hover:bg-gray-300 text-black py-1 px-3 rounded-full text-xs"
+              >
+                {genre.fields.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Book Details */}
+        <div className="mt-10 border-t border-gray-300 pt-6">
+          <h2 className="font-semibold text-left">Book Details</h2>
+          <ul className="list-disc list-inside text-sm space-y-2 text-gray-800">
+            {fields.isbn && (
+              <li>
+                <strong>ISBN:</strong> {fields.isbn}
+              </li>
+            )}
+            {fields.publicationYear && (
+              <li>
+                <strong>Publication Year:</strong> {fields.publicationYear}
+              </li>
+            )}
+            {fields.language && (
+              <li>
+                <strong>Language:</strong> {fields.language}
+              </li>
+            )}
+            {fields.rating && (
+              <li>
+                <strong>Rating:</strong> {fields.rating.toFixed(1)}
+              </li>
+            )}
+          </ul>
+        </div>
       </div>
 
-{/* DESKTOP LAYOUT */}
-<div className="hidden md:block max-w-5xl mx-auto bg-white rounded-lg shadow-md px-8">
-       <div className="flex gap-8">
+      {/* DESKTOP LAYOUT — prikazuje se od sm (640px) naviše */}
+      <div className="sm:hidden md:block max-w-5xl  bg-white  mx-auto rounded-lg shadow-md p-12">
+        <div className="flex gap-8">
           <div className="w-1/4 flex flex-col justify-start items-start">
             <img
               src={fields.coverImage?.fields?.file?.url}
@@ -235,7 +271,7 @@ const BookDetailPage = () => {
               {!showDescription && (
                 <button
                   onClick={() => setShowDescription(true)}
-                  className="text-[#593E9E] underline mt-4"
+                  className="text-[#593E9E] underline mt-4 cursor-pointer"
                 >
                   Show more
                 </button>
@@ -259,7 +295,7 @@ const BookDetailPage = () => {
             </div>
 
             {/* Book Details */}
-            <div className="mt-10 border-t border-gray-300 pt-6">
+            <div className="mt-5 border-t border-gray-300 pt-6">
               <h2 className="font-semibold text-left">Book Details</h2>
               <ul className="list-disc list-inside text-sm space-y-2 text-gray-800">
                 {fields.isbn && (

@@ -16,16 +16,19 @@ interface TagListProps {
 
 export default function TagList({ tags }: TagListProps) {
   return (
-    <div className="bg-gray-100 p-6 rounded-lg shadow-md border">
-      <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">
+      <div className="bg-gray-100 p-6 md:rounded-lg shadow-md border">
+      <h2 className="text-xl text-[#593E2E] sm:text-2xl font-semibold mb-4">
         Browse by Tags
       </h2>
-      <ul className="grid grid-cols-2 gap-x-6 gap-y-4">
+      <ul className="grid grid-cols-2 gap-x-10 gap-y-6">
         {tags.length > 0 ? (
           tags.map((tag) => (
-            <li key={tag.sys.id} className="border-b pb-2">
+            <li
+              key={tag.sys.id}
+              className="border-b border-white pb-2 text-[#593E2E]"
+            >
               <Link href={`/tags/${tag.fields.tagName.toLowerCase()}`}>
-                <span className="text-gray-800 hover:text-blue-500 transition">
+                <span className="text-[#593E2E] hover:text-[#a3714b] transition whitespace-nowrap">
                   {tag.fields.tagName}
                 </span>
               </Link>
@@ -38,3 +41,4 @@ export default function TagList({ tags }: TagListProps) {
     </div>
   );
 }
+

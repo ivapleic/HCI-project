@@ -37,7 +37,7 @@ export default function BookCard({ book }: BookCardProps) {
       <div className="flex flex-col flex-1">
         <Link
           href={`/books/${book.id}`}
-          className="text-lg md:text-xl font-semibold text-gray-900 hover:text-[#593E2E] hover:underline cursor-pointer break-words max-w-[170px] md:max-w-[280px] truncate"
+          className="text-lg md:text-xl font-semibold text-gray-900 hover:text-[#593E2E] hover:underline cursor-pointer break-words max-w-[200px] md:max-w-[300px] truncate"
           style={{ wordBreak: "break-word" }}
         >
           {book.title}

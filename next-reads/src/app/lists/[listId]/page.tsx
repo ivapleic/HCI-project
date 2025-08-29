@@ -2,11 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import Link from "next/link";
 import { getListById } from "../../lists/_lib/ListApi";
 import { getAllTags } from "../../tags/_lib/TagsApi";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import BookCard from "../../components/BookCard/BookCard";
+import TagList from "../../components/TagsList/TagsList";
+import Pagination from "../../components/Pagination/Pagination";
 
 const ListDetailPage = () => {
   const { listId } = useParams();
@@ -16,7 +17,7 @@ const ListDetailPage = () => {
 
   // Pagination state
   const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 3;
 
   useEffect(() => {
     const fetchListAndTags = async () => {
@@ -27,7 +28,7 @@ const ListDetailPage = () => {
 
         if (fetchedList) {
           setList(fetchedList);
-          setPage(1); // Reset paging on new list
+          setPage(1); // resetiraj paginaciju kod promjene liste
         }
         setTags(allTags);
       } catch (error) {
@@ -49,9 +50,8 @@ const ListDetailPage = () => {
   }
 
   // Pagination calculations
-  const totalPages = list.fields.books
-    ? Math.ceil(list.fields.books.length / itemsPerPage)
-    : 0;
+  const totalItems = list.fields.books?.length || 0;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const startIndex = (page - 1) * itemsPerPage;
   const displayedBooks = list.fields.books?.slice(startIndex, startIndex + itemsPerPage) || [];
@@ -62,10 +62,24 @@ const ListDetailPage = () => {
   };
 
   return (
-    <div className="md:max-w-[1200px] md:mx-auto p-4 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-        {/* Glavni sadržaj */}
-        <div className="md:col-span-2 bg-white p-6 rounded-lg shadow-md border">
+    <div
+      id="page-top"
+      className="
+        w-full
+        mt-4
+        mb-4
+        px-0
+        md:px-20
+        mx-0
+        md:mx-auto
+        md:max-w-[1200px]
+        flex
+        justify-center
+      "
+    >
+      <div className="grid xs:grid-cols-1 xs:gap-5 md:grid-cols-3 md:gap-10 w-full max-w-[1200px] mx-auto">
+        {/* Glavni sadržaj - zauzima 2/3 na desktopu */}
+        <div className="md:col-span-2 p-6 md:bg-white md:rounded-lg md:shadow-md">
           <h2 className="text-3xl font-bold text-[#593E2E] mb-6">{list.fields.name}</h2>
 
           {/* Opis liste */}
@@ -92,59 +106,18 @@ const ListDetailPage = () => {
 
           {/* Paginacija kontrola */}
           {totalPages > 1 && (
-            <div className="flex justify-center space-x-4 mt-6">
-              <button
-                onClick={() => handlePageChange(page - 1)}
-                disabled={page === 1}
-                className={`px-4 py-2 rounded-md ${
-                  page === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-[#593E2E] text-white hover:bg-[#8C6954]"
-                }`}
-              >
-                Previous
-              </button>
-              {[...Array(totalPages)].map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => handlePageChange(i + 1)}
-                  className={`px-4 py-2 rounded-md ${
-                    page === i + 1 ? "bg-[#593E2E] text-white" : "bg-gray-100 hover:bg-gray-200"
-                  }`}
-                >
-                  {i + 1}
-                </button>
-              ))}
-              <button
-                onClick={() => handlePageChange(page + 1)}
-                disabled={page === totalPages}
-                className={`px-4 py-2 rounded-md ${
-                  page === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-[#593E2E] text-white hover:bg-[#8C6954]"
-                }`}
-              >
-                Next
-              </button>
-            </div>
+            <Pagination
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+              currentPage={page}
+              onPageChange={handlePageChange}
+            />
           )}
         </div>
 
         {/* Desni sidebar s tagovima */}
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md border">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">Browse by Tags</h2>
-          <ul className="grid grid-cols-2 gap-x-6 gap-y-4">
-            {tags.length > 0 ? (
-              tags.map((tag: any) => (
-                <li key={tag.sys.id} className="border-b pb-2">
-                  <Link
-                    href={`/tags/${tag.fields.tagName.toLowerCase()}`}
-                    className="text-gray-800 hover:text-blue-500 transition"
-                  >
-                    {tag.fields.tagName}
-                  </Link>
-                </li>
-              ))
-            ) : (
-              <p>No tags available.</p>
-            )}
-          </ul>
+        <div>
+          <TagList tags={tags} />
         </div>
       </div>
     </div>

@@ -206,6 +206,7 @@ export default function GenrePage() {
                           moreLink={`/tags/${genreName.toLowerCase()}`}
                           moreLabel="More lists with this genre"
                           title=""
+                          columns={1}
                         />
                       ))}
                     </div>
