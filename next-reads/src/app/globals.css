@@ -22,20 +22,9 @@ body {
 
 * {
   user-select: none;
-  outline: none; 
 }
 
-a, button, input, select, textarea {
-  pointer-events: auto;
-}
 
-div, span, img {
-  outline: none;
-}
-
-div, section, article, main {
-  border: none !important;
-}
 
 
 .scroller {
@@ -54,9 +43,6 @@ div, section, article, main {
   padding-block: 1rem;
 
 }
-/* main {
-  padding-right: 1rem;
-} */
 
 .scroller[data-animated="true"] {
   margin-right:2rem;

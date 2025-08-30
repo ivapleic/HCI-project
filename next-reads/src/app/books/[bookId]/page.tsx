@@ -49,7 +49,7 @@ const BookDetailPage = () => {
   return (
     <>
       {/* MOBILE LAYOUT — prikazuje se samo ispod sm (640px) */}
-      <div className="xs:block xs:bg-green-300 md:hidden max-w-md mx-auto rounded-lg sm:bg-white shadow-md p-4">
+      <div className="block xs:bg-green-300 mt-10 md:hidden max-w-md mx-auto rounded-lg sm:bg-white shadow-md p-4">
         <div className="flex flex-col items-center mt-10">
           <img
             src={fields.coverImage?.fields.file.url}
@@ -188,7 +188,7 @@ const BookDetailPage = () => {
       </div>
 
       {/* DESKTOP LAYOUT — prikazuje se od sm (640px) naviše */}
-      <div className="sm:hidden md:block max-w-5xl  bg-white  mx-auto rounded-lg shadow-md p-12">
+      <div className="hidden md:block  max-w-4xl mx-auto bg-white rounded-lg shadow-md px-8 py-10">
         <div className="flex gap-8">
           <div className="w-1/4 flex flex-col justify-start items-start">
             <img

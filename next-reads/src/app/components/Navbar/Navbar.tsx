@@ -151,20 +151,6 @@ const [dropdownPos, setDropdownPos] = useState<{left: number, width: number} | n
           {isBrowseDropdownOpen && (
             <div className="flex flex-col bg-white border-t border-b border-gray-100">
               <Link
-                href="/recommendations"
-                className="px-4 py-2 text-gray-700 hover:bg-gray-50"
-                onClick={() => setIsBrowseDropdownOpen(false)}
-              >
-                Recommendations
-              </Link>
-              <Link
-                href="/new-releases"
-                className="px-4 py-2 text-gray-700 hover:bg-gray-50"
-                onClick={() => setIsBrowseDropdownOpen(false)}
-              >
-                New Releases
-              </Link>
-              <Link
                 href="/genres"
                 className="px-4 py-2 text-gray-700 hover:bg-gray-50"
                 onClick={() => setIsBrowseDropdownOpen(false)}

@@ -15,28 +15,7 @@ type MegaMenuProps = {
 };
 
 const megaMenuLinks: MenuLink[] = [
-  {
-    name: "Recommended",
-    href: "/recommendations",
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-        <rect x="4" y="4" width="16" height="16" rx="2" />
-        <path d="M8 8h8M8 12h8M8 16h6" strokeLinecap="round" />
-      </svg>
-    ),
-    description: "Books we think you'll like",
-  },
-  {
-    name: "New Releases",
-    href: "/new-releases",
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-        <rect x="4" y="6" width="16" height="14" rx="2" />
-        <path d="M16 2v4M8 2v4M4 10h16" strokeLinecap="round" />
-      </svg>
-    ),
-    description: "See the latest arrivals.",
-  },
+
   {
     name: "Genres",
     href: "/genres",

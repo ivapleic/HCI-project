@@ -89,7 +89,7 @@ export default function SearchBar({ className = "" }: SearchBarProps) {
             handleSearch();
           }
         }}
-        className="w-full rounded-lg border border-white bg-[#F9F3EE] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#593E2E] hover:border-[#593E2E]"
+        className="w-full rounded-lg border-white bg-[#F9F3EE] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#593E2E] hover:border-[#593E2E]"
         aria-label="Search books or authors"
       />
       <button
@@ -109,7 +109,7 @@ export default function SearchBar({ className = "" }: SearchBarProps) {
       </button>
 
       {showDropdown && query.trim() && (
-        <ul className="absolute z-50 mt-1 w-full bg-white border border-gray-300 rounded shadow-lg max-h-80 overflow-auto p-0">
+        <ul className="absolute z-50 mt-1 w-full bg-white border-gray-300 rounded shadow-lg max-h-80 overflow-auto p-0">
           {loading && (
             <li className="p-2 text-center text-gray-500">Loading...</li>
           )}

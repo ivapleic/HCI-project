@@ -23,7 +23,7 @@ const BookCard = ({
   const coverImageUrl = book?.fields?.coverImage?.fields?.file?.url;
 
   return (
-    <div className="bg-white rounded-lg shadow border flex items-start gap-3 p-4 mb-4">
+    <div className="bg-white rounded-lg shadow flex items-start gap-3 p-4 mb-4">
       <a
         href={`/books/${bookId}`}
         className="flex-shrink-0 block w-16 h-24 rounded overflow-hidden"
@@ -75,7 +75,7 @@ const BookCard = ({
           // </button>
             <></>
         ) : (
-           <button className="mt-3 py-1 px-3 text-xs border rounded hover:bg-gray-50 transition">
+           <button className="mt-3 py-1 px-3 text-xs border-white bg-[#eeccb0]  rounded hover:bg-gray-50 transition">
              Update Progress
            </button>
         
@@ -217,7 +217,7 @@ return (
     <h1 className="text-3xl font-bold mb-8 text-[#593E2E]">Bookshelves</h1>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
       {/* Want To Read (lijevo) */}
-      <div className="bg-[#F9F6F3] rounded-xl p-5 shadow border">
+      <div className="bg-[#F9F6F3] rounded-xl p-5 shadow">
         <h2 className="flex items-center gap-2 font-semibold text-base mb-4">
           <span className="inline-block rounded-full bg-[#EEE3D2] px-2 py-1 text-xs font-bold text-[#87715A]">
             Want To Read
@@ -242,7 +242,7 @@ return (
       </div>
 
       {/* Favourites (sredina) */}
-      <div className="bg-[#F3F6FA] rounded-xl p-5 shadow border">
+      <div className="bg-[#F3F6FA] rounded-xl p-5 shadow">
         <h2 className="flex items-center gap-2 font-semibold text-base mb-4">
           <span className="inline-block rounded-full bg-[#D6E3F3] px-2 py-1 text-xs font-bold text-[#6A7BA3]">
             Favourites
@@ -262,7 +262,7 @@ return (
       </div>
 
       {/* Currently Reading + Read (desno) */}
-      <div className="bg-[#F6FAF6] rounded-xl p-5 shadow border flex flex-col gap-2">
+      <div className="bg-[#F6FAF6] rounded-xl p-5 shadow flex flex-col gap-2">
         <div>
           <h2 className="flex items-center gap-2 font-semibold text-base mb-4">
             <span className="inline-block rounded-full bg-[#DBF1DD] px-2 py-1 text-xs font-bold text-[#599C66]">

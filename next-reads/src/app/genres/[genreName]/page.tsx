@@ -97,7 +97,7 @@ export default function GenrePage() {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 justify-center mx-auto md:justify-normal w-full">
-            <div className="md:col-span-2 bg-white p-6 rounded-lg shadow-md border">
+            <div className="md:col-span-2 bg-white p-6 rounded-lg shadow-md">
               {/* Breadcrumb inside left div above heading */}
               <div className="mb-4 text-gray-600 text-sm select-none flex flex-wrap gap-2">
                 <Link

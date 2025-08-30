@@ -14,13 +14,17 @@ import BookCard from "../../components/BookCard/BookCard";
 const AuthorPage = () => {
   const rawAuthorId = useParams().authorId;
   const authorId = Array.isArray(rawAuthorId) ? rawAuthorId[0] : rawAuthorId;
+
   const [author, setAuthor] = useState<any>(null);
   const [books, setBooks] = useState<any[]>([]);
   const [series, setSeries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showMoreBio, setShowMoreBio] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true); // komponenta je mountana na klijentu
+
     const fetchData = async () => {
       const authorData = await getAuthorById(authorId as string);
       const booksData = await getBooksByAuthorId(authorId as string);
@@ -35,6 +39,9 @@ const AuthorPage = () => {
     fetchData();
   }, [authorId]);
 
+  // **Vrlo važno**: ništa ne rendera dok komponenta nije mountana
+  if (!mounted) return null;
+
   if (loading) return <div className="text-center mt-10">Loading...</div>;
   if (!author)
     return <div className="text-center text-red-500">Author not found</div>;
@@ -44,7 +51,20 @@ const AuthorPage = () => {
   const safeUrl = imageUrl?.startsWith("//") ? `https:${imageUrl}` : imageUrl;
 
   return (
-    <>
+    <div
+      id="page-top"
+      className="
+        w-full
+        mt-4
+        mb-4
+        px-0
+        md:px-20
+        mx-0
+        md:mx-auto
+        md:max-w-[1200px]
+      "
+    >
+
       {/* MOBILE VERZIJA */}
       <div className="block md:hidden max-w-md mx-auto bg-white rounded-lg shadow-md p-6 my-8 border border-gray-200">
         {/* Slika i ime autora */}
@@ -122,7 +142,7 @@ const AuthorPage = () => {
       </div>
 
       {/* DESKTOP VERZIJA */}
-      <div className="hidden md:block max-w-4xl mx-auto bg-white rounded-lg shadow-md px-8 py-10">
+      <div className="hidden md:block  max-w-4xl mx-auto bg-white rounded-lg shadow-md px-8 py-10">
         {/* Slika i ime autora  */}
         <div className="flex flex-row gap-6 mb-10 items-start">
           <img
@@ -188,22 +208,30 @@ const AuthorPage = () => {
           )}
         </div>
 
-        {/* Naslov za serije */}
-        <h2 className="text-2xl font-semibold mb-4 mt-10 text-[#593e2e] hover:underline">
-          <Link href={`/author/${authorId}/series`}>
-            Series by {fields.fullName}
-          </Link>
-        </h2>
-        <ItemGrid
-          items={series}
-          itemType="series"
-          title=""
-          maxDisplay={6}
-          moreLink={`/author/${authorId}/series`}
-          moreLabel="More series by"
-        />
+        {/* SERIES - desktop */}
+        <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto px-4 py-4">
+          <h2 className="text-2xl font-semibold mb-4 text-[#593e2e] col-span-2">
+            <Link
+              href={`/author/${authorId}/series`}
+              className="hover:underline"
+            >
+              Series of {fields.fullName}
+            </Link>
+          </h2>
+          {series.slice(0, 6).map((s) => (
+            <ItemGrid
+              key={s.sys.id}
+              items={[s]}
+              itemType="series"
+              title=""
+              maxDisplay={1}
+              moreLink={`/author/${authorId}/series`}
+              moreLabel="More series by"
+            />
+          ))}
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import CategoryDropdown from "../CategoryDropdown/CategoryDropdown";
 
@@ -20,7 +20,7 @@ export default function BookCard({ book }: BookCardProps) {
   const coverImageUrl = book.coverImageUrl ?? "/placeholder_book.png";
 
   return (
-    <div className="relative flex items-start gap-3 p-4 bg-white rounded-xl shadow-md border hover:shadow-lg transition">
+    <div className="relative flex items-start gap-3 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition">
       {/* Mjesto za CategoryDropdown u gornjem desnom kutu */}
       <div className="absolute top-3 right-3 z-10">
         <CategoryDropdown bookId={book.id} variant="icon" />
@@ -37,7 +37,7 @@ export default function BookCard({ book }: BookCardProps) {
       <div className="flex flex-col flex-1">
         <Link
           href={`/books/${book.id}`}
-          className="text-lg md:text-xl font-semibold text-gray-900 hover:text-[#593E2E] hover:underline cursor-pointer break-words max-w-[200px] md:max-w-[300px] truncate"
+          className="text-lg md:text-xl font-semibold text-gray-900 hover:text-[#593E2E] hover:underline cursor-pointer break-words max-w-[170px] md:max-w-[280px] truncate"
           style={{ wordBreak: "break-word" }}
         >
           {book.title}

@@ -102,7 +102,7 @@ const GenresPage = () => {
         <div className="text-center text-lg">Loading genres...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 justify-center mx-auto md:justify-normal w-full">
-          <div className="md:col-span-2 bg-white p-6 rounded-lg shadow-md border">
+          <div className="md:col-span-2 bg-white p-6 rounded-lg shadow-md">
             <h1 className="text-3xl text-[#593E2E] font-bold tracking-tight text-left mb-4">
               Genres
             </h1>
@@ -113,12 +113,12 @@ const GenresPage = () => {
                 placeholder="Search genres by name..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#593E2E]"
+                className="flex-1 p-2 border-white bg-[#F9F3EE]  rounded-md focus:outline-none focus:ring-2 focus:ring-[#593E2E]"
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               />
               <button
                 onClick={handleSearch}
-                className="px-4 py-2 bg-[#593E2E] text-white rounded-md hover:bg-[#8C6954] w-full sm:w-auto text-sm sm:text-base"
+                className="px-4 py-2 hover:cursor-pointer bg-[#593E2E] text-white rounded-md hover:bg-[#8C6954] w-full sm:w-auto text-sm sm:text-base"
               >
                 Search
               </button>
@@ -126,7 +126,7 @@ const GenresPage = () => {
 
             <div className="space-y-8">
               {displayedGenres.map((genre, index) => (
-                <div key={index} className="border-b">
+                <div key={index} className="border-b border-[#593E2E]">
                   <h3
                     className="text-xl font-bold text-[#593E2E] mb-2 cursor-pointer hover:underline"
                     onClick={() =>

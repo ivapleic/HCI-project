@@ -1,7 +1,4 @@
 /* Custom toast container */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 .my-toast-container {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;

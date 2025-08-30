@@ -13,7 +13,7 @@ type GenresListProps = {
 
 const GenresList: React.FC<GenresListProps> = ({ genres }) => {
   return (
-   <div className="bg-gray-100 p-6 rounded-lg shadow-md border">
+   <div className="bg-gray-100 p-6 rounded-lg shadow-md">
       <h2 className="text-xl text-[#593E2E] sm:text-2xl font-semibold mb-4">All Genres</h2>
       <ul className="grid grid-cols-2 gap-x-16 gap-y-4">
         {genres.map((genre, index) => (
