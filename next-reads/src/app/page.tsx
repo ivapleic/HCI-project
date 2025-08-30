@@ -1,11 +1,23 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import Link from "next/link";
 import { getGenreList } from "../lib/api";
 import { getAllBooks } from "./books/_lib/booksApi";
 
-// Dopuni ovo mapiranje prema svojim žanrovima!
+// ⬇️ OVDJE MIJENJAŠ ŽELJENE ŽANROVE (po REDOSLIJEDU PRIKAZA)
+const PREFERRED_GENRES: string[] = [
+  "Science Fiction",
+  "Fantasy",
+  "Mystery",
+  "Romance",
+  "Thriller",
+  "History",
+  "Non-fiction",
+  "Classics",
+];
+
+// (ne diram stilove — samo ostavljam tvoje ikone po imenu)
 const GENRE_ICONS: Record<string, string> = {
   "Science Fiction": "🚀",
   Cookbooks: "👨‍🍳",
@@ -15,9 +27,19 @@ const GENRE_ICONS: Record<string, string> = {
   History: "🏺",
   Thriller: "🔪",
   Mystery: "🕵️",
+  "Non-fiction": "📘",
+  Classics: "🏛️",
   // fallback za ostale
   default: "📚",
 };
+
+// helper za usporedbu neovisno o velikim/malim slovima i dijakritici
+const keyOf = (s: string) =>
+  (s || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
 
 const HomePage = () => {
   const scrollersRef = useRef<HTMLElement | null>(null);
@@ -77,6 +99,33 @@ const HomePage = () => {
       });
     });
   }
+
+  // ⬇️ LOGIKA: složi točno one žanrove koje želiš + popuni do 8 ako ih je manje
+  const displayGenres = useMemo(() => {
+    if (!genres?.length) return [];
+
+    const wantedKeys = PREFERRED_GENRES.map(keyOf);
+    const normalized = genres.map((g: any) => ({
+      ...g,
+      _key: keyOf(g.fields?.name || ""),
+    }));
+
+    // prvo točno željeni, po tvom redoslijedu
+    const preferred = wantedKeys
+      .map((k) => normalized.find((g: any) => g._key === k))
+      .filter(Boolean) as any[];
+
+    // ostatak koji nije u preferiranima, abecedno (ako treba popuniti do 8)
+    const remaining = normalized
+      .filter((g: any) => !wantedKeys.includes(g._key))
+      .sort((a: any, b: any) =>
+        (a.fields?.name || "").localeCompare(b.fields?.name || "", "hr-HR", {
+          sensitivity: "base",
+        })
+      );
+
+    return [...preferred, ...remaining].slice(0, 8);
+  }, [genres]);
 
   return (
     <main
@@ -151,7 +200,7 @@ const HomePage = () => {
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {genres.slice(0, 8).map((genre: any, index: number) => (
+              {displayGenres.map((genre: any, index: number) => (
                 <Link key={index} href={`/genres/${genre.fields.name}`}>
                   <div className="bg-white p-6 rounded-lg shadow-md text-center cursor-pointer flex flex-col items-center hover:shadow-lg hover:scale-105 transition group">
                     {genre.fields.coverImage?.fields?.file?.url ? (

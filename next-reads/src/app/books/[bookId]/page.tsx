@@ -49,7 +49,7 @@ const BookDetailPage = () => {
   return (
     <>
       {/* MOBILE LAYOUT — prikazuje se samo ispod sm (640px) */}
-      <div className="block xs:bg-green-300 mt-10 md:hidden max-w-md mx-auto rounded-lg sm:bg-white shadow-md p-4">
+      <div className="block xs:bg-green-300 mt-10 md:hidden max-w-md mx-auto p-4">
         <div className="flex flex-col items-center mt-10">
           <img
             src={fields.coverImage?.fields.file.url}
