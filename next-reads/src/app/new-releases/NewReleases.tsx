@@ -97,15 +97,15 @@ const NewReleasesList = () => {
   };
 
 return (
-    <div
+   <div
       id="page-top"
       className="
         w-full
-        mt-4
-        mb-4
+        mt-2
+        mb-0
+        sm:mb-4
         px-0
         md:px-20
-        mx-0
         md:mx-auto
         md:max-w-[1200px]
         flex
@@ -114,7 +114,7 @@ return (
     >
     <div className="grid grid-cols-1 md:grid-cols-[2.5fr_1fr] gap-5 justify-center mx-auto md:justify-normal w-full">
       {/* Glavni sadržaj sa suženom širinom */}
-     <div className=" sm:bg-white p-6 sm:rounded-lg sm:shadow-md">
+     <div className=" sm:bg-white pb-6 p-6 py-2 px-4 border-b border-[#D8D8D8] sm:border-none  sm:rounded-lg sm:shadow-md">
         <h2 className="text-2xl font-bold mb-2 text-[#593e2e]">
           New Releases
         </h2>
