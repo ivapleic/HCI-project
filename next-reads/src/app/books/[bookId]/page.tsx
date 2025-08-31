@@ -16,14 +16,11 @@ const BookDetailPage = () => {
   const [showDescription, setShowDescription] = useState(false);
 
   // State za dropdown
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const categories = [
     { id: "wantToRead", label: "Want to Read" },
     { id: "currentlyReading", label: "Currently Reading" },
     { id: "read", label: "Read" },
   ];
-
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,9 +44,19 @@ const BookDetailPage = () => {
   const { fields } = book;
 
   return (
-    <>
+    <div className="    
+        w-full
+        sm:mt-6
+        mb-0
+        sm:mb-20
+        px-0
+        md:px-20
+        md:mx-auto
+        md:max-w-[1200px]
+      "
+    >
       {/* MOBILE LAYOUT — prikazuje se samo ispod sm (640px) */}
-      <div className="block md:hidden max-w-md mx-auto p-4 px-6">
+      <div className="block md:hidden max-w-md mx-auto my-0 p-4 px-6">
         <div className="flex flex-col items-center mt-10">
           <img
             src={fields.coverImage?.fields.file.url}
@@ -113,7 +120,7 @@ const BookDetailPage = () => {
             <CategoryDropdown
               bookId={validBookId}
               variant="full"
-              className="mb-6"
+              className="mb-6 max-w-[180px]"
             />
           ) : (
             <div>Invalid Book ID</div>
@@ -160,7 +167,7 @@ const BookDetailPage = () => {
         </div>
 
         {/* Book Details */}
-        <div className="mt-10 border-t border-gray-300 pt-6">
+        <div className="mt-5 sm:mt-10 border-t border-gray-300 pt-6">
           <h2 className="font-semibold text-left">Book Details</h2>
           <ul className="list-disc list-inside text-sm space-y-2 text-gray-800">
             {fields.isbn && (
@@ -188,7 +195,7 @@ const BookDetailPage = () => {
       </div>
 
       {/* DESKTOP LAYOUT — prikazuje se od sm (640px) naviše */}
-      <div className="mt-10 hidden md:block max-w-4xl mx-auto bg-white rounded-lg shadow-md px-8 py-10">
+      <div className="my-5 sm:mb-15 hidden md:block max-w-4xl mx-auto bg-white rounded-lg shadow-md px-8 py-10">
         <div className="flex gap-8">
           <div className="w-1/4 flex flex-col items-start">
             <div className="w-[180px]">
@@ -226,12 +233,12 @@ const BookDetailPage = () => {
             )}
 
             {/* Naslov */}
-            <h2 className="text-4xl font-bold mb-4 text-[#593E2E]">
+            <h2 className="text-3xl font-bold mb-4 text-[#593E2E]">
               {fields.title}
             </h2>
 
             {/* Autor */}
-            <div className="mb-4">
+            <div className="mb-2">
               <Link
                 href={`/author/${fields.author?.sys?.id}`}
                 className="text-black hover:underline text-lg"
@@ -241,7 +248,7 @@ const BookDetailPage = () => {
             </div>
 
             {/* Rating */}
-            <div className="flex items-center mb-6 gap-2">
+            <div className="flex items-center mb-4 gap-2">
               {[...Array(5)].map((_, i) => {
                 const full = i < (fields.rating ?? 0);
                 const half = i + 0.5 === fields.rating;
@@ -321,7 +328,7 @@ const BookDetailPage = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

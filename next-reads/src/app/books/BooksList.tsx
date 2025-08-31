@@ -1,133 +1,140 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { getBooksByGenre } from "./_lib/booksApi";
-import { GetAuthorById } from "../../lib/api";
-import { getGenreList } from "../genres/_lib/genresApi";
+import { useSearchParams, useRouter } from "next/navigation";
+import { getBooks, getGenreList } from "../genres/_lib/genresApi";
+import GenresList from "../components/GenresList/GenresList";
+import BookCard from "../components/BookCard/BookCard";
+import Pagination from "../components/Pagination/Pagination";
 
 const BooksList = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const genreName = searchParams.get("genre") || "";
+  const [genreId, setGenreId] = useState<string | null>(null);
   const [books, setBooks] = useState<any[]>([]);
   const [genres, setGenres] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 5;
 
-  const searchParams = useSearchParams();
-  const genre = searchParams.get("genre");
-  const tag = searchParams.get("tag");
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 8;
 
   useEffect(() => {
-    const fetchBooks = async () => {
+    const fetchGenreAndBooks = async () => {
       setLoading(true);
       try {
-        let fetchedBooks: any[] = [];
+        const genresData = await getGenreList();
+        setGenres(genresData || []);
 
-        if (genre) {
-          fetchedBooks = await getBooksByGenre(genre);
-        } else if (tag) {
-          fetchedBooks = []; // prilagodi za tag logiku
+        const genre = genresData.find(
+          (g: any) => g.fields.name.toLowerCase() === genreName.toLowerCase()
+        );
+
+        if (!genre) {
+          router.push("/genres");
+          return;
         }
 
-        for (const book of fetchedBooks) {
-          if (book.fields.author) {
-            const author = await GetAuthorById(book.fields.author.sys.id);
-            book.fields.authorDetails = author;
-          }
-        }
+        setGenreId(genre.sys.id);
 
-        setBooks(fetchedBooks);
+        const allBooks = await getBooks();
+
+        // 🔑 Za razliku od NewReleasesList nema filtera po godini
+        const filteredBooks = allBooks.filter((book: any) =>
+          book.fields.genre?.some((g: any) => g.sys.id === genre.sys.id)
+        );
+
+        setBooks(filteredBooks);
+        setPage(1);
       } catch (error) {
-        console.error("Error fetching books:", error);
+        console.error("Error fetching books or genres:", error);
+        router.push("/genres");
       } finally {
         setLoading(false);
       }
     };
 
-    const fetchGenres = async () => {
-      try {
-        const genresData = await getGenreList();
-        setGenres(genresData);
-      } catch (error) {
-        console.error("Error fetching genres:", error);
-      }
-    };
+    if (genreName) {
+      fetchGenreAndBooks();
+    } else {
+      router.push("/genres");
+    }
+  }, [genreName, router]);
 
-    fetchBooks();
-    fetchGenres();
-  }, [genre, tag]);
+  if (loading) return <div className="text-center mt-12">Loading...</div>;
+
+  if (books.length === 0)
+    return (
+      <p className="text-gray-600 text-center mt-12">
+        No books available in this genre.
+      </p>
+    );
 
   const totalPages = Math.ceil(books.length / itemsPerPage);
-  const displayedBooks = books.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const startIndex = (page - 1) * itemsPerPage;
+  const displayedBooks = books.slice(startIndex, startIndex + itemsPerPage);
 
-  if (loading) return <div>Loading books...</div>;
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    setPage(newPage);
+  };
 
   return (
-    <div className="w-full my-4 px-4 md:px-10 lg:px-20">
-      <div className="grid grid-cols-4 gap-10">
-        <div className="col-span-3">
-          <h1 className="text-3xl font-bold text-[#593E2E] mb-6">
-            {genre ? `Books in ${genre}` : tag ? `Books with tag: ${tag}` : "All Books"}
-          </h1>
-          {displayedBooks.length > 0 ? (
-            displayedBooks.map((book: any, index: number) => (
-              <div key={index} className="flex bg-white rounded-lg shadow-md p-4 w-full mb-4">
-                <img
-                  src={book.fields.coverImage.fields.file.url}
-                  alt={book.title}
-                  className="w-32 h-48 object-cover rounded-md mr-4"
-                />
-                <div className="flex flex-col w-full space-y-2">
-                  <div className="flex justify-between items-center mb-4">
-                    <div className="flex flex-col space-y-1">
-                      <h3 className="font-semibold text-xl text-[#593E2E]">{book.fields.title}</h3>
-                      <h3 className="text-md text-gray-700">
-                        {book.fields.authorDetails ? book.fields.authorDetails.fullName : "Unknown Author"}
-                      </h3>
-                    </div>
-                    <select className="p-2 bg-[#12504F] text-white rounded-md cursor-pointer hover:bg-[#0A3C39] transition duration-300" defaultValue="wantToRead">
-                      <option value="favourites">Favourites</option>
-                      <option value="wantToRead">Want to Read</option>
-                      <option value="readingNow">Reading Now</option>
-                    </select>
-                  </div>
-                  <p className="text-sm text-gray-500">
-                    {book.fields.description ? book.fields.description.slice(0, 250) : "No description available."}...
-                  </p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-600">No books available.</p>
-          )}
-          <div className="flex justify-center space-x-4 mt-6">
-            <button onClick={() => setPage(page - 1)} disabled={page === 1} className={`px-4 py-2 rounded-md ${page === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-[#593E2E] text-white hover:bg-[#8C6954]"}`}>
-              Previous
-            </button>
-            <span className="text-gray-700 font-semibold flex items-center justify-center">
-              Page {page} of {totalPages}
-            </span>
-            <button onClick={() => setPage(page + 1)} disabled={page === totalPages} className={`px-4 py-2 rounded-md ${page === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-[#593E2E] text-white hover:bg-[#8C6954]"}`}>
-              Next
-            </button>
+    <div
+      id="page-top"
+      className="
+        w-full
+        mt-2
+        sm:mt-6
+        mb-0
+        sm:mb-20
+        px-0
+        md:px-20
+        md:mx-auto
+        md:max-w-[1200px]
+        flex
+        justify-center
+      "
+    >
+      <div className="grid grid-cols-1 md:grid-cols-[2.5fr_1fr] sm:gap-5 justify-center mx-auto md:justify-normal w-full">
+        {/* Glavni sadržaj */}
+        <div className="sm:bg-white pb-6 pt-2 sm:pt-6 py-2 px-4 border-b border-[#D8D8D8] sm:border-none sm:rounded-lg sm:shadow-md">
+          <h2 className="text-2xl font-bold mb-2 text-[#593e2e]">
+            {genreName ? `Books in ${genreName}` : "All Books"}
+          </h2>
+
+          <div className="space-y-6 p-2 flex-1 min-w-0">
+            {displayedBooks.map((book: any) => (
+              <BookCard
+                key={book.sys.id}
+                book={{
+                  id: book.sys.id,
+                  title: book.fields.title,
+                  coverImageUrl: book.fields.coverImage?.fields.file.url,
+                  authorName: book.fields.author?.fields.fullName,
+                  authorId: book.fields.author?.sys.id,
+                  description: book.fields.description,
+                }}
+              />
+            ))}
+            <Pagination
+              totalItems={books.length}
+              itemsPerPage={itemsPerPage}
+              currentPage={page}
+              onPageChange={handlePageChange}
+            />
           </div>
         </div>
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md border">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">All Genres</h2>
-          <ul className="grid grid-cols-2 gap-x-6 gap-y-4">
-            {genres.map((genre, index) => (
-              <li key={`${genre.sys.id}-${index}`} className="border-b pb-2">
-                <Link href={`/genres/${genre.fields.name.toLowerCase()}`}>
-                  <span className="text-gray-800 hover:text-blue-500 transition">{genre.fields.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+
+        {/* Sidebar */}
+        <div className="flex justify-center md:justify-start">
+          <div className="w-full md:w-auto">
+            <GenresList genres={genres} />
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default BooksList;

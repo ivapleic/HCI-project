@@ -67,3 +67,47 @@ export async function addBookToUserCategory(
     throw error;
   }
 }
+
+export async function getUserBookCategories (
+  userId: string,
+  bookId: string
+): Promise<string[]> {
+  try {
+    const space = await mgmtClient.getSpace(SPACE_ID);
+    const environment = await space.getEnvironment("master");
+    const userEntry = await environment.getEntry(userId);
+    if (!userEntry) throw new Error("User not found");
+
+    const categories: string[] = [];
+
+    // Mapiranje polja u Contentfulu
+    const fieldMapping: Record<string, string> = {
+      wantToRead: "wantToRead",
+      currentlyReading: "currentlyReading",
+      read: "readBooks",
+      favourites: "favourites",
+    };
+
+    // Prođi svako polje i vidi je li bookId unutra
+    for (const [key, contentfulField] of Object.entries(fieldMapping)) {
+      const fieldValue = userEntry.fields[contentfulField]?.["en-US"];
+
+      if (!fieldValue) continue;
+
+      if (Array.isArray(fieldValue)) {
+        // polja tipa niz linkova
+        if (fieldValue.some((item: any) => item.sys.id === bookId)) {
+          categories.push(key);
+        }
+      } else if (fieldValue.sys?.id === bookId) {
+        // polje tipa pojedinačni link
+        categories.push(key);
+      }
+    }
+
+    return categories;
+  } catch (error) {
+    console.error("Error fetching user book categories:", error);
+    return [];
+  }
+}

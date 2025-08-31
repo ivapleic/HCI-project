@@ -34,11 +34,18 @@ const GenresList: React.FC<GenresListProps> = ({ genres }) => {
 
   return (
     <div className="bg-gray-100 p-6 sm:rounded-lg border-b border-[#D8D8D8] sm:border-none sm:shadow-md">
-      <h2 className="text-xl text-[#593E2E] sm:text-2xl font-semibold mb-4">All Genres</h2>
 
+      <Link href={`/genres`}>
+        <h2 className="text-xl text-[#593E2E] hover:text-[#a3714b] sm:text-2xl font-semibold mb-4 ho">
+          All Genres
+        </h2>
+      </Link>
       <ul className="grid grid-cols-2 gap-x-16 gap-y-4">
         {sorted.map((genre) => (
-          <li key={genre.sys.id} className="border-b border-white pb-2 text-[#593E2E]">
+          <li
+            key={genre.sys.id}
+            className="border-b border-white pb-2 text-[#593E2E]"
+          >
             <Link href={`/genres/${toSlug(genre.fields.name)}`}>
               <span className="text-[#593E2E] hover:text-[#a3714b] transition whitespace-nowrap">
                 {genre.fields.name}
