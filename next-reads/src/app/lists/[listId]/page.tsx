@@ -62,28 +62,29 @@ const ListDetailPage = () => {
   };
 
   return (
-    <div
+  <div
       id="page-top"
       className="
         w-full
-        mt-4
-        mb-4
+        mt-2
+        sm:mt-6
+        mb-0
+        sm:mb-20
         px-0
         md:px-20
-        mx-0
         md:mx-auto
         md:max-w-[1200px]
         flex
         justify-center
       "
     >
-      <div className="grid xs:grid-cols-1 xs:gap-5 md:grid-cols-3 md:gap-10 w-full max-w-[1200px] mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 md:gap-10 w-full max-w-[1200px] mx-auto">
         {/* Glavni sadržaj - zauzima 2/3 na desktopu */}
-        <div className="md:col-span-2 p-6 md:bg-white md:rounded-lg md:shadow-md">
-          <h2 className="text-3xl font-bold text-[#593E2E] mb-6">{list.fields.name}</h2>
+        <div className="md:col-span-2 p-6 border-b border-[#D8D8D8] sm:border-none md:bg-white md:rounded-lg md:shadow-md">
+          <h2 className="text-3xl font-bold text-[#593E2E] mb-2">{list.fields.name}</h2>
 
           {/* Opis liste */}
-          <div className="mb-10 prose max-w-none">
+          <div className="mb-5 prose max-w-none">
             {list.fields.description ? documentToReactComponents(list.fields.description) : null}
           </div>
 
