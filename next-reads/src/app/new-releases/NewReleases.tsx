@@ -97,13 +97,14 @@ const NewReleasesList = () => {
   };
 
 return (
-   <div
+    <div
       id="page-top"
       className="
         w-full
         mt-2
+        sm:mt-6
         mb-0
-        sm:mb-4
+        sm:mb-20
         px-0
         md:px-20
         md:mx-auto
@@ -114,11 +115,11 @@ return (
     >
     <div className="grid grid-cols-1 md:grid-cols-[2.5fr_1fr] gap-5 justify-center mx-auto md:justify-normal w-full">
       {/* Glavni sadržaj sa suženom širinom */}
-     <div className=" sm:bg-white pb-6 p-6 py-2 px-4 border-b border-[#D8D8D8] sm:border-none  sm:rounded-lg sm:shadow-md">
+     <div className=" sm:bg-white pb-6 pt-2 sm:pt-6 py-2 px-4 border-b border-[#D8D8D8] sm:border-none sm:rounded-lg sm:shadow-md">
         <h2 className="text-2xl font-bold mb-2 text-[#593e2e]">
           New Releases
         </h2>
-        <div className="space-y-6 xs:p-2 md:p-4 flex-1 min-w-0">
+        <div className="space-y-6 p-2 flex-1 min-w-0">
           {displayedBooks.map((book: any) => (
             <BookCard
               key={book.sys.id}

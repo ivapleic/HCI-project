@@ -82,8 +82,9 @@ export default function GenrePage() {
       className="
         w-full
         mt-2
+        sm:mt-6
         mb-0
-        sm:mb-4
+        sm:mb-20
         px-0
         md:px-20
         md:mx-auto

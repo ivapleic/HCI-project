@@ -16,7 +16,7 @@ interface TagListProps {
 
 export default function TagList({ tags }: TagListProps) {
   return (
-      <div className="bg-gray-100 p-6 md:rounded-lg shadow-md">
+      <div className="bg-gray-100 p-6 md:rounded-lg shadow-md border-b border-[#D8D8D8] sm:border-none">
       <h2 className="text-xl text-[#593E2E] sm:text-2xl font-semibold mb-4">
         Browse by Tags
       </h2>

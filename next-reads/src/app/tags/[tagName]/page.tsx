@@ -6,7 +6,7 @@ import Link from "next/link";
 import { getListsByTagName } from "../../lists/_lib/ListApi";
 import { getAllTags } from "../_lib/TagsApi";
 import ItemGrid from "../../components/ItemGrid/ItemGrid";
-import Pagination from "../../components/Pagination/Pagination"; 
+import Pagination from "../../components/Pagination/Pagination";
 import TagList from "../../components/TagsList/TagsList";
 
 const TagPage = () => {
@@ -58,61 +58,73 @@ const TagPage = () => {
   };
 
   return (
-    <div className="w-full mb-0 sm:mb-6 my-4 mx-0 md:px-10 lg:px-20">
+    <div
+      className="   
+        w-full
+        mt-2
+        sm:mt-6
+        mb-0
+        sm:mb-20
+        px-0
+        md:px-20
+        md:mx-auto
+        md:max-w-[1200px]
+        flex"
+    >
       {loading ? (
         <div className="text-center text-lg">Loading lists...</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 sm:gap-6">
           {/* Glavni dio - filtrirane liste */}
-          <div className="md:col-span-2 sm:bg-white p-6 mb-0 sm:rounded-lg sm:shadow-md">
-            <h2 className="text-xl sm:text-2xl md:text-3xl text-[#593E2E] font-bold tracking-tight text-left mb-6">
+          <div className="md:col-span-2 sm:bg-white p-6 mb-0 sm:rounded-lg sm:shadow-md border-b border-[#D8D8D8] sm:border-none ">
+            <h2 className="text-md sm:text-xl md:text-2xl text-[#593E2E] font-bold tracking-tight text-left mb-6">
               Lists for tag: <span className="text-red-700">{tagName}</span>
             </h2>
 
-          {displayedLists.length > 0 ? (
-  <>
-    {/* XS/SM: 2 po redu */}
-    <div className="block sm:hidden">
-      <ItemGrid
-        items={displayedLists}
-        itemType="lists"
-        maxDisplay={itemsPerPage}
-        columns={2}
-        moreLink={`/tags/${tagName}`}
-        moreLabel="More lists with this genre"
-        title=""
-      />
-    </div>
+            {displayedLists.length > 0 ? (
+              <>
+                {/* XS/SM: 2 po redu */}
+                <div className="block lg:hidden">
+                  <ItemGrid
+                    items={displayedLists}
+                    itemType="lists"
+                    maxDisplay={itemsPerPage}
+                    columns={2}
+                    moreLink={`/tags/${tagName}`}
+                    moreLabel="More lists with this genre"
+                    title=""
+                  />
+                </div>
+           
+                <div className="lg:block hidden">
+                  <ItemGrid
+                    items={displayedLists}
+                    itemType="lists"
+                    maxDisplay={itemsPerPage}
+                    columns={3}
+                    moreLink={`/tags/${tagName}`}
+                    moreLabel="More lists with this genre"
+                    title=""
+                  />
+                </div>
+               
 
-    {/* MD+: 3 po redu */}
-    <div className="hidden sm:block">
-      <ItemGrid
-        items={displayedLists}
-        itemType="lists"
-        maxDisplay={itemsPerPage}
-        columns={2}
-        moreLink={`/tags/${tagName}`}
-        moreLabel="More lists with this genre"
-        title=""
-      />
-    </div>
+                <Pagination
+                  totalItems={filteredLists.length}
+                  itemsPerPage={itemsPerPage}
+                  currentPage={page}
+                  onPageChange={handlePageChange}
+                />
+              </>
+            ) : (
+              <p className="text-gray-600">No lists available for this tag.</p>
+            )}
+          </div>
 
-    <Pagination
-      totalItems={filteredLists.length}
-      itemsPerPage={itemsPerPage}
-      currentPage={page}
-      onPageChange={handlePageChange}
-    />
-  </>
-) : (
-  <p className="text-gray-600">No lists available for this tag.</p>
-)}
-    </div>
-
-        {/* Desni sidebar s tagovima */}
-               <div>
-                 <TagList tags={tags} />
-               </div>
+          {/* Desni sidebar s tagovima */}
+          <div>
+            <TagList tags={tags} />
+          </div>
         </div>
       )}
     </div>
