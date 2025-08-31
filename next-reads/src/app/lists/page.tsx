@@ -16,7 +16,7 @@ const ListsPage = () => {
   const itemsPerPage = 15;
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchError, setSearchError] = useState<string>(""); // ⬅️ NEW
+  const [searchError, setSearchError] = useState<string>("");
   const router = useRouter();
 
   useEffect(() => {
@@ -47,62 +47,65 @@ const ListsPage = () => {
     setPage(newPage);
   };
 
-  // helper: robustan slug (bez dijakritike, razmaka, velikih slova)
-  const toSlug = (s: string) =>
-    (s || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
+  // Search po TAG-u: exact (po imenu) → partial → /tags/not-found
+  const handleSearch = () => {
+    const q = searchQuery.trim();
+    if (!q) return;
 
-  // Search po TAG-u: exact slug → partial → poruka
-// Search po TAG-u: exact (po imenu) → partial → /tags/not-found
-const handleSearch = () => {
-  const q = searchQuery.trim();
-  if (!q) return;
+    const norm = (s: string) =>
+      (s || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
 
-  const norm = (s: string) =>
-    (s || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .trim();
+    const qNorm = norm(q);
 
-  const qNorm = norm(q);
+    // exact match po imenu (name ili tagName)
+    const exact = tags.find(
+      (t: any) => norm(t?.fields?.name || t?.fields?.tagName || "") === qNorm
+    );
+    if (exact) {
+      const name = exact.fields?.name || exact.fields?.tagName || "";
+      router.push(`/tags/${encodeURIComponent(name)}`);
+      return;
+    }
 
-  // exact match po imenu (name ili tagName)
-  const exact = tags.find(
-    (t: any) => norm(t?.fields?.name || t?.fields?.tagName || "") === qNorm
-  );
-  if (exact) {
-    const name = exact.fields?.name || exact.fields?.tagName || "";
-    router.push(`/tags/${encodeURIComponent(name)}`); // ⬅️ URL = IME TAGA
-    return;
-  }
+    // partial match
+    const partial = tags.find((t: any) =>
+      norm(t?.fields?.name || t?.fields?.tagName || "").includes(qNorm)
+    );
+    if (partial) {
+      const name = partial.fields?.name || partial.fields?.tagName || "";
+      router.push(`/tags/${encodeURIComponent(name)}`);
+      return;
+    }
 
-  // partial match
-  const partial = tags.find((t: any) =>
-    norm(t?.fields?.name || t?.fields?.tagName || "").includes(qNorm)
-  );
-  if (partial) {
-    const name = partial.fields?.name || partial.fields?.tagName || "";
-    router.push(`/tags/${encodeURIComponent(name)}`); // ⬅️ URL = IME TAGA
-    return;
-  }
-
-  // nema taga → not found stranica
-  router.push("/tags/not-found");
-};
+    // nema taga → not found stranica
+    router.push("/tags/not-found");
+  };
 
   return (
-    <div className="w-full my-4 sm:px-10 mx-0 lg:px-20">
+    <div
+      className="
+        w-full
+        mt-2
+        sm:mt-6
+        mb-0
+        sm:mb-20
+        px-0
+        md:px-20
+        md:mx-auto
+        md:max-w-[1200px]
+        flex
+      "
+    >
       {loading ? (
         <div className="text-center text-lg">Loading lists...</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          {/* Glavni dio - paginirane liste */}
-          <div className="md:col-span-8 sm:bg-white p-6 sm:rounded-lg sm:shadow-md">
+        <div className="grid grid-cols-1 md:grid-cols-3 sm:gap-6 w-full">
+          {/* Glavni dio - paginirane liste (span 2) */}
+          <div className="md:col-span-2 sm:bg-white p-6 mb-0 sm:rounded-lg sm:shadow-md border-b border-[#D8D8D8] sm:border-none">
             <h2 className="text-xl sm:text-2xl md:text-3xl text-[#593E2E] font-bold tracking-tight text-left mb-4">
               Lists
             </h2>
@@ -132,30 +135,52 @@ const handleSearch = () => {
               <p className="text-sm text-red-600 mb-4">{searchError}</p>
             )}
 
-             <p className="text-sm md:text-3xl text-[#593E2E] font-bold tracking-tight text-left my-4">
+            <p className="text-sm md:text-2xl text-[#593E2E] font-bold tracking-tight text-left my-4">
               Popular lists
             </p>
 
-            <ItemGrid
-              items={displayedLists}
-              itemType="lists"
-              maxDisplay={itemsPerPage}
-              columns={2}
-              title=""
-              moreLink="/lists"
-              moreLabel="View all lists"
-            />
+            {displayedLists.length > 0 ? (
+              <>
+                {/* XS–LG: 2 po redu */}
+                <div className="block lg:hidden">
+                  <ItemGrid
+                    items={displayedLists}
+                    itemType="lists"
+                    maxDisplay={itemsPerPage}
+                    columns={2}
+                    moreLink="/lists"
+                    moreLabel="View all lists"
+                    title=""
+                  />
+                </div>
 
-            <Pagination
-              totalItems={lists.length}
-              itemsPerPage={itemsPerPage}
-              currentPage={page}
-              onPageChange={handlePageChange}
-            />
+                {/* LG+: 3 po redu */}
+                <div className="hidden lg:block">
+                  <ItemGrid
+                    items={displayedLists}
+                    itemType="lists"
+                    maxDisplay={itemsPerPage}
+                    columns={3}
+                    moreLink="/lists"
+                    moreLabel="View all lists"
+                    title=""
+                  />
+                </div>
+
+                <Pagination
+                  totalItems={lists.length} // <- ukupno lista, ne displayed
+                  itemsPerPage={itemsPerPage}
+                  currentPage={page}
+                  onPageChange={handlePageChange}
+                />
+              </>
+            ) : (
+              <p className="text-gray-600">No lists available for this tag.</p>
+            )}
           </div>
 
-          {/* Desni div: Popis svih tagova (uvijek kompletan popis) */}
-          <div className="md:col-span-4">
+          {/* Desni sidebar (span 1) */}
+          <div className="md:col-span-1">
             <TagList tags={tags} />
           </div>
         </div>
