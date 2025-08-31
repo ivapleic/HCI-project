@@ -46,45 +46,43 @@ export default function ItemGrid({
         <>
           <div className={`grid grid-cols-${columns} gap-6`}>
             {displayedItems.map((item) => (
-              <Link
-                key={item.sys.id}
-                href={`/${itemType}/${item.sys.id}`}
-                className="group flex flex-col items-center bg-white rounded-xl shadow-md border border-gray-200 p-4 hover:shadow-lg transition"
-              >
-                <div className="flex gap-2 mb-2 justify-center max-w-[110px] md:max-w-[180px]">
-                  {(itemType === "series" || itemType === "lists") &&
-                  item.fields.books?.length ? (
-                    item.fields.books
-                      .slice(0, 3)
-                      .map((b) => (
-                        <img
-                          key={b.sys.id}
-                          src={safeImageUrl(
-                            b.fields.coverImage?.fields.file.url
-                          )}
-                          alt={b.fields.title}
-                          className="object-cover rounded-md shadow-md w-12 h-16 sm:w-14 sm:h-20 md:w-20 md:h-28 cursor-pointer hover:opacity-80 transition"
-                        />
-                      ))
-                  ) : (
-                    <img
-                      src={safeImageUrl(
-                        item.fields.coverImage?.fields.file.url
-                      )}
-                      alt={
-                        itemType === "lists"
-                          ? item.fields.name
-                          : item.fields.title
-                      }
-                      className="object-cover rounded-md shadow-md w-12 h-16 sm:w-14 sm:h-20 md:w-20 md:h-28 cursor-pointer hover:opacity-80 transition"
-                    />
-                  )}
-                </div>
+             <Link
+  key={item.sys.id}
+  href={`/${itemType}/${item.sys.id}`}
+  className="group flex min-w-0 flex-col items-center bg-white rounded-xl shadow-md border border-gray-200 p-4 hover:shadow-lg transition"
+>
+  {/* ⬇️ NOVO: uvijek 3 slike koje se prilagođavaju širini kartice */}
+  <div className="w-full mb-2">
+    <div className="grid grid-cols-3 gap-2 w-full">
+      {Array.from({ length: 3 }, (_, i) => {
+        const b = (item.fields.books ?? [])[i];
+        const src = safeImageUrl(
+          b?.fields.coverImage?.fields.file?.url ??
+            item.fields.coverImage?.fields.file?.url
+        );
+        const alt =
+          b?.fields?.title ??
+          (itemType === "lists" ? item.fields.name : item.fields.title) ??
+          "Cover";
 
-                <h3 className="text-center text-[15px] font-bold text-gray-900 mt-1 group-hover:text-[#8c6954] transition-colors duration-200">
-                  {itemType === "lists" ? item.fields.name : item.fields.title}
-                </h3>
-              </Link>
+        return (
+          <img
+            key={i}
+            src={src}
+            alt={alt}
+            className="w-full aspect-[2/3] object-cover rounded-md shadow-md"
+            loading="lazy"
+          />
+        );
+      })}
+    </div>
+  </div>
+
+  <h3 className="text-center text-[15px] font-bold text-gray-900 mt-1 group-hover:text-[#8c6954] transition-colors duration-200">
+    {itemType === "lists" ? item.fields.name : item.fields.title}
+  </h3>
+</Link>
+
             ))}
           </div>
           {moreLink && items.length > maxDisplay && (

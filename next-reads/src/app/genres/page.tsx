@@ -102,7 +102,7 @@ const GenresPage = () => {
         <div className="text-center text-lg">Loading genres...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 justify-center mx-auto md:justify-normal w-full">
-          <div className="md:col-span-2 bg-white p-6 sm:rounded-lg shadow-md">
+          <div className="md:col-span-2 sm:bg-white p-6 sm:rounded-lg sm:shadow-md">
             <h1 className="text-3xl text-[#593E2E] font-bold tracking-tight text-left my-4">
               Genres
             </h1>
@@ -113,7 +113,7 @@ const GenresPage = () => {
                 placeholder="Search genres by name..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 p-2 border-white bg-[#F9F3EE]  rounded-md focus:outline-none focus:ring-2 focus:ring-[#593E2E]"
+                className="flex-1 p-2 bg-white border-[#593E2E] sm:border-white sm:bg-[#F9F3EE] rounded-md focus:outline-none focus:ring-2 focus:ring-[#593E2E]"
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               />
               <button

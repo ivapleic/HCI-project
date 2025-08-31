@@ -81,11 +81,11 @@ export default function GenrePage() {
       id="page-top"
       className="
         w-full
-        mt-4
-        mb-4
+        mt-2
+        mb-0
+        sm:mb-4
         px-0
         md:px-20
-        mx-0
         md:mx-auto
         md:max-w-[1200px]
         flex
@@ -97,9 +97,9 @@ export default function GenrePage() {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 sm:gap-5 justify-center mx-auto md:justify-normal w-full">
-            <div className="md:col-span-2 md:bg-white p-6 sm:rounded-lg sm:shadow-md">
+            <div className="md:col-span-2 md:bg-white border-b border-b-gray-500 sm:border-none p-6 py-2 sm:rounded-lg sm:shadow-md">
               {/* Breadcrumb inside left div above heading */}
-              <div className="mb-4 text-gray-600 text-sm select-none flex flex-wrap gap-2">
+              <div className="mb-4 sm:mt-4 text-gray-600 text-sm select-none flex flex-wrap gap-2">
                 <Link
                   href="/genres"
                   className="font-medium text-[#8C6954] hover:text-[#593e2e] hover:underline text-lg"
@@ -190,8 +190,8 @@ export default function GenrePage() {
               </div>
 
               {/* Lists under this Genre */}
-              <div className="mb-10">
-                <h2 className="text-xl font-bold mb-4 text-[#593e2e] cursor-pointer hover:underline">
+              <div className="mb-8">
+                <h2 className="text-xl font-bold text-[#593e2e] cursor-pointer hover:underline">
                   <Link href={`/tags/${genreName.toLowerCase()}`}>
                     Lists with this genre
                   </Link>
