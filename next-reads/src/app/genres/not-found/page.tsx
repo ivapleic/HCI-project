@@ -26,7 +26,7 @@ export default function NotFoundPage() {
     <div className="w-full px-4 md:px-20 mx-0 my-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Lijevi blok: Not found poruka */}
-        <div className="relative md:col-span-2 flex flex-col items-center justify-center h-full bg-white rounded-lg shadow-md border p-8">
+        <div className="relative md:col-span-2 flex flex-col items-center justify-center h-full bg-white rounded-lg shadow-md p-8">
           <Link
             href="/genres"
             className="absolute top-8 left-8 inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200"
@@ -34,7 +34,7 @@ export default function NotFoundPage() {
             ← Back to Genres
           </Link>
           <div className="flex flex-col items-center justify-center w-full">
-            <h1 className="text-4xl font-bold text-[#593E2E] mb-4 mt-8">
+            <h1 className="text-4xl font-bold text-[#593E2E] mb-4 mt-16">
               Genre Not Found
             </h1>
             <p className="text-gray-600 mb-6">

@@ -83,15 +83,16 @@ const GenresPage = () => {
   }, [page]);
 
   return (
-    <div
+ <div
       id="page-top"
       className="
         w-full
-        mt-4
-        mb-4
+        mt-2
+        sm:mt-6
+        mb-0
+        sm:mb-20
         px-0
         md:px-20
-        mx-0
         md:mx-auto
         md:max-w-[1200px]
         flex
@@ -102,8 +103,8 @@ const GenresPage = () => {
         <div className="text-center text-lg">Loading genres...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 justify-center mx-auto md:justify-normal w-full">
-          <div className="md:col-span-2 sm:bg-white p-6 sm:rounded-lg sm:shadow-md">
-            <h1 className="text-3xl text-[#593E2E] font-bold tracking-tight text-left my-4">
+          <div className="md:col-span-2 sm:bg-white px-6 py-4 sm:py-6 sm:rounded-lg sm:shadow-md">
+            <h1 className="text-3xl text-[#593E2E] font-bold tracking-tight text-left mb-4">
               Genres
             </h1>
 
@@ -124,7 +125,7 @@ const GenresPage = () => {
               </button>
             </div>
 
-            <div className="space-y-8 mb-15">
+            <div className="space-y-8 mb-10">
               {displayedGenres.map((genre, index) => (
                 <div key={index} className="border-b border-[#D8D8D8]">
                   <h3
