@@ -9,7 +9,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="flex flex-col min-h-screen">
         <AuthProvider>
           <Navbar />
-          <main className="w-full flex-grow p-0 m-0 md:p-4">{children}</main>
+          <main className="w-full flex-grow mb-0">{children}</main>
           <Footer />
         </AuthProvider>
       </body>

@@ -49,7 +49,7 @@ const BookDetailPage = () => {
   return (
     <>
       {/* MOBILE LAYOUT — prikazuje se samo ispod sm (640px) */}
-      <div className="block xs:bg-green-300 mt-10 md:hidden max-w-md mx-auto p-4">
+      <div className="block md:hidden max-w-md mx-auto p-4 px-6">
         <div className="flex flex-col items-center mt-10">
           <img
             src={fields.coverImage?.fields.file.url}
@@ -188,24 +188,27 @@ const BookDetailPage = () => {
       </div>
 
       {/* DESKTOP LAYOUT — prikazuje se od sm (640px) naviše */}
-      <div className="hidden md:block  max-w-4xl mx-auto bg-white rounded-lg shadow-md px-8 py-10">
+      <div className="mt-10 hidden md:block max-w-4xl mx-auto bg-white rounded-lg shadow-md px-8 py-10">
         <div className="flex gap-8">
-          <div className="w-1/4 flex flex-col justify-start items-start">
-            <img
-              src={fields.coverImage?.fields?.file?.url}
-              alt={fields.title}
-              className="w-full rounded object-contain max-h-[400px]"
-            />
+          <div className="w-1/4 flex flex-col items-start">
+            <div className="w-[180px]">
+              <img
+                src={fields.coverImage?.fields?.file?.url}
+                alt={fields.title}
+                className="rounded object-contain w-full max-h-[300px]"
+              />
 
-            {/* Komponenta dropdowna ispod slike */}
-            <>
+              {/* Dropdown poravnan po širini slike */}
               {validBookId ? (
-                <CategoryDropdown bookId={validBookId} variant="full" />
+                <CategoryDropdown
+                  bookId={validBookId}
+                  variant="full"
+                  className="mt-3 w-full"
+                />
               ) : (
                 <div>Invalid Book ID</div>
               )}
-              {/* ostali JSX */}
-            </>
+            </div>
           </div>
 
           {/* Info i detajli */}
@@ -223,9 +226,9 @@ const BookDetailPage = () => {
             )}
 
             {/* Naslov */}
-            <h1 className="text-4xl font-bold mb-4 text-[#593E2E]">
+            <h2 className="text-4xl font-bold mb-4 text-[#593E2E]">
               {fields.title}
-            </h1>
+            </h2>
 
             {/* Autor */}
             <div className="mb-4">
@@ -280,7 +283,7 @@ const BookDetailPage = () => {
 
             {/* Genres */}
             <div className="mt-10">
-              <h2 className="font-semibold text-left">Genres</h2>
+              <h2 className="font-semibold text-left mb-5">Genres</h2>
               <div className="flex gap-2 flex-wrap">
                 {fields.genre?.map((genre: any) => (
                   <Link
@@ -296,7 +299,7 @@ const BookDetailPage = () => {
 
             {/* Book Details */}
             <div className="mt-5 border-t border-gray-300 pt-6">
-              <h2 className="font-semibold text-left">Book Details</h2>
+              <h2 className="font-semibold text-left mb-5">Book Details</h2>
               <ul className="list-disc list-inside text-sm space-y-2 text-gray-800">
                 {fields.isbn && (
                   <li>
@@ -312,12 +315,7 @@ const BookDetailPage = () => {
                   <li>
                     <strong>Language:</strong> {fields.language}
                   </li>
-                )}
-                {fields.rating && (
-                  <li>
-                    <strong>Rating:</strong> {fields.rating.toFixed(1)}
-                  </li>
-                )}
+                )}               
               </ul>
             </div>
           </div>

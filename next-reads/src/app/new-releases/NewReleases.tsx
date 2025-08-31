@@ -17,7 +17,7 @@ const NewReleasesList = () => {
   const [loading, setLoading] = useState(true);
 
   const [page, setPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 8;
 
   useEffect(() => {
     const fetchGenreAndBooks = async () => {
@@ -97,24 +97,24 @@ const NewReleasesList = () => {
   };
 
 return (
-  <div
-    id="page-top"
-    className="
-      w-full
-      mt-4
-      mb-4
-      xs:px-0
-      md:px-10
-      xs:mx-0
-      md:mx-auto
-      md:max-w-[1200px]
-      flex
-      justify-center
-    "
-  >
-    <div className="grid xs:grid-cols-1 md:grid-cols-[2.5fr_1fr] gap-10 justify-center mx-auto md:justify-normal w-full">
+    <div
+      id="page-top"
+      className="
+        w-full
+        mt-4
+        mb-4
+        px-0
+        md:px-20
+        mx-0
+        md:mx-auto
+        md:max-w-[1200px]
+        flex
+        justify-center
+      "
+    >
+    <div className="grid grid-cols-1 md:grid-cols-[2.5fr_1fr] gap-5 justify-center mx-auto md:justify-normal w-full">
       {/* Glavni sadržaj sa suženom širinom */}
-     <div className=" bg-white p-6 rounded-lg shadow-md border">
+     <div className=" sm:bg-white p-6 sm:rounded-lg sm:shadow-md">
         <h2 className="text-2xl font-bold mb-2 text-[#593e2e]">
           New Releases
         </h2>
@@ -143,7 +143,7 @@ return (
 
       {/* Sidebar sa maksimalnom širinom */}
       <div className="flex justify-center md:justify-start">
-        <div className="w-full md:w-auto max-w-[320px]">
+            <div className="w-full md:w-auto">
           <GenresList genres={genres} />
         </div>
       </div>

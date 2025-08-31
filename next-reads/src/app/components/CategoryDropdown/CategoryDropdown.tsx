@@ -30,7 +30,7 @@ export default function CategoryDropdown({
   function toggleDropdown() {
     setDropdownOpen((open) => !open);
   }
-    useEffect(() => {
+  useEffect(() => {
     // Primjer: dohvat statusa iz localStorage ili API
     const checkFavoriteStatus = async () => {
       try {
@@ -40,7 +40,9 @@ export default function CategoryDropdown({
         const userObj = JSON.parse(userJson);
 
         // Poziv api endpointa da vidi da li je knjiga favorita za tog usera (pretpostavka)
-        const res = await fetch(`/api/my-books/isFavorite?userId=${userObj.id}&bookId=${bookId}`);
+        const res = await fetch(
+          `/api/my-books/isFavorite?userId=${userObj.id}&bookId=${bookId}`
+        );
         if (!res.ok) {
           setFavorite(false);
           return;
@@ -205,31 +207,31 @@ export default function CategoryDropdown({
       ) : (
         <div
           ref={dropdownRef}
-          className={`${className ?? ""} relative inline-block text-left mt-2`}
-          style={{ minWidth: "180px" }}
+          className={`${className ?? ""} relative text-left mt-2 w-full`}
         >
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-2 w-full">
             <button
               onClick={toggleFavorite}
               aria-label={
                 favorite ? "Remove from favorites" : "Add to favorites"
               }
               title={favorite ? "Remove from favorites" : "Add to favorites"}
-              className="text-red-600 hover:text-red-700 focus:outline-none"
+              className="text-red-600 hover:text-red-700 focus:outline-none shrink-0"
             >
               {favorite ? <FaHeart size={20} /> : <FaRegHeart size={20} />}
             </button>
+
             <button
               onClick={toggleDropdown}
-              className="bg-[#155449] hover:bg-[#12463a] transition text-white font-semibold py-2 px-6 rounded-md flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-[#155449] shadow text-sm"
+              className="flex-1 min-w-0 bg-[#155449] hover:bg-[#12463a] transition text-white py-2 px-3 sm:px-5 rounded-md flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-[#155449] shadow text-[10px] sm:text-xs leading-4 font-bold"
               aria-haspopup="true"
               aria-expanded={dropdownOpen}
             >
-              <span className="max-w-[140px] truncate">
+              <span className="truncate whitespace-nowrap">
                 {selectedCategory.label}
               </span>
               <svg
-                className="ml-2 w-5 h-5"
+                className="ml-2 w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0"
                 aria-hidden="true"
                 fill="none"
                 stroke="currentColor"
@@ -246,10 +248,7 @@ export default function CategoryDropdown({
           </div>
 
           {dropdownOpen && (
-            <ul
-              className="absolute right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-20 text-sm text-[#155449]"
-              style={{ width: "100%", minWidth: "180px" }}
-            >
+            <ul className="absolute left-0 right-0 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg z-20 text-sm text-[#155449]">
               {categories.map(({ id, label }) => (
                 <li
                   key={id}

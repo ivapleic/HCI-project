@@ -130,7 +130,7 @@ const HomePage = () => {
   return (
     <main
       ref={scrollersRef}
-      className="flex items-center min-h-screen flex-col px-6 md:p-10 bg-[#F2F2F2]"
+      className="flex items-center min-h-screen flex-col px-6 pt-10 md:p-10 bg-white"
     >
       {/* HERO SEKCIJA */}
       <div className="w-full max-w-screen-2xl rounded-xl overflow-hidden bg-gradient-to-tl from-[#f2cab3]/30 to-[#fff]/5 shadow mb-8 p-8 flex flex-col md:flex-row items-center justify-between">
@@ -190,7 +190,7 @@ const HomePage = () => {
       </div>
 
       {/* Genre list */}
-      <div className="w-full max-w-screen-2xl py-2 my-2 border-b-[0.5px] border-[#F2CAB3]">
+      <div className="w-full max-w-screen-2xl py-2 my-2  border-[#F2CAB3]">
         <p className="text-3xl text-[#593E2E] tracking-tight text-left mb-8">
           Browse books by your favourite genre
         </p>

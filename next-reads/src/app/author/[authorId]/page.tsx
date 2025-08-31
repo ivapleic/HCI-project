@@ -51,24 +51,24 @@ const AuthorPage = () => {
   const safeUrl = imageUrl?.startsWith("//") ? `https:${imageUrl}` : imageUrl;
 
   return (
-    <div
+   <div
       id="page-top"
       className="
         w-full
-        mt-4
-        mb-4
+        mt-6
         px-0
         md:px-20
         mx-0
         md:mx-auto
         md:max-w-[1200px]
+        flex
+        justify-center
       "
     >
-
       {/* MOBILE VERZIJA */}
-      <div className="block md:hidden max-w-md mx-auto bg-white rounded-lg shadow-md p-6 my-8 border border-gray-200">
+      <div className="block sm:hidden max-w-md mb-0 sm:bg-white sm:rounded-lg sm:shadow-md p-6 my-2 border-gray-200">
         {/* Slika i ime autora */}
-        <div className="flex flex-col items-center mb-6">
+        <div className="flex flex-col items-center pt-4 mb-6">
           <img
             src={safeUrl}
             alt={fields.fullName}
@@ -85,7 +85,7 @@ const AuthorPage = () => {
           {!showMoreBio && fields.bio && fields.bio.length > 180 && (
             <button
               onClick={() => setShowMoreBio(true)}
-              className="mt-2 text-sm border px-3 py-1 rounded hover:bg-gray-100 transition"
+              className="mt-2 text-sm px-3 py-1 rounded hover:bg-gray-100 hover:cursor-pointer transition"
             >
               Show more ▾
             </button>
@@ -142,7 +142,8 @@ const AuthorPage = () => {
       </div>
 
       {/* DESKTOP VERZIJA */}
-      <div className="hidden md:block  max-w-4xl mx-auto bg-white rounded-lg shadow-md px-8 py-10">
+      <div className="hidden sm:block max-w-4xl mb-0 bg-white rounded-lg shadow-md px-8 py-10">
+        
         {/* Slika i ime autora  */}
         <div className="flex flex-row gap-6 mb-10 items-start">
           <img
@@ -162,7 +163,7 @@ const AuthorPage = () => {
             {!showMoreBio && fields.bio && fields.bio.length > 180 && (
               <button
                 onClick={() => setShowMoreBio(true)}
-                className="mt-2 text-sm px-3 py-1 rounded hover:bg-gray-100 transition"
+                className="mt-2 text-sm px-3 py-1 rounded hover:bg-gray-100 transition hover:cursor-pointer"
               >
                 Show more ▾
               </button>
@@ -171,7 +172,7 @@ const AuthorPage = () => {
         </div>
 
         {/* Knjige */}
-        <div className="mb-10">
+        <div className="mb-5">
           <h2 className="text-2xl font-semibold mb-4 text-[#593e2e]">
             <Link
               href={`/author/${authorId}/books`}
@@ -208,27 +209,30 @@ const AuthorPage = () => {
           )}
         </div>
 
-        {/* SERIES - desktop */}
-        <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto px-4 py-4">
-          <h2 className="text-2xl font-semibold mb-4 text-[#593e2e] col-span-2">
+        {/* Serijali */}
+        <div className="max-w-4xl mx-auto py-4">        
+          <h2 className="text-2xl font-semibold text-[#593e2e] mb-3">
             <Link
               href={`/author/${authorId}/series`}
               className="hover:underline"
             >
-              Series of {fields.fullName}
+               Series of {fields.fullName}
             </Link>
           </h2>
-          {series.slice(0, 6).map((s) => (
-            <ItemGrid
-              key={s.sys.id}
-              items={[s]}
-              itemType="series"
-              title=""
-              maxDisplay={1}
-              moreLink={`/author/${authorId}/series`}
-              moreLabel="More series by"
-            />
-          ))}
+
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+            {series.slice(0, 6).map((s) => (
+              <ItemGrid
+                key={s.sys.id}
+                items={[s]}
+                itemType="series"
+                title=""
+                maxDisplay={1}
+                moreLink={`/author/${authorId}/series`}
+                moreLabel="More series by"
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

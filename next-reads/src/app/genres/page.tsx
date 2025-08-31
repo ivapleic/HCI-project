@@ -101,9 +101,9 @@ const GenresPage = () => {
       {loading ? (
         <div className="text-center text-lg">Loading genres...</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 justify-center mx-auto md:justify-normal w-full">
-          <div className="md:col-span-2 bg-white p-6 rounded-lg shadow-md">
-            <h1 className="text-3xl text-[#593E2E] font-bold tracking-tight text-left mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 justify-center mx-auto md:justify-normal w-full">
+          <div className="md:col-span-2 bg-white p-6 sm:rounded-lg shadow-md">
+            <h1 className="text-3xl text-[#593E2E] font-bold tracking-tight text-left my-4">
               Genres
             </h1>
 
@@ -124,9 +124,9 @@ const GenresPage = () => {
               </button>
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-8 mb-15">
               {displayedGenres.map((genre, index) => (
-                <div key={index} className="border-b border-[#593E2E]">
+                <div key={index} className="border-b border-[#D8D8D8]">
                   <h3
                     className="text-xl font-bold text-[#593E2E] mb-2 cursor-pointer hover:underline"
                     onClick={() =>
@@ -185,7 +185,7 @@ const GenresPage = () => {
 
           <div className="flex justify-center md:justify-start">
             <div className="w-full md:w-auto">
-              <GenresList genres={filteredGenres} />
+              <GenresList genres={genres} />
             </div>
           </div>
         </div>

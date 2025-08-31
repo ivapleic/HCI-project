@@ -70,9 +70,6 @@ const BookCard = ({
         )}
 
         {type === "read" ? (
-          // <button className="mt-3 py-1 px-3 text-xs border rounded hover:bg-gray-50 transition">
-          //   Write A Review
-          // </button>
             <></>
         ) : (
            <button className="mt-3 py-1 px-3 text-xs border-white bg-[#eeccb0]  rounded hover:bg-gray-50 transition">
@@ -213,9 +210,10 @@ useEffect(() => {
   };
 
 return (
-  <div className="max-w-7xl mx-auto px-4 py-4">
-    <h1 className="text-3xl font-bold mb-8 text-[#593E2E]">Bookshelves</h1>
+  <div className="max-w-7xl mx-auto px-8 py-4">
+    <h1 className="text-3xl font-bold my-4 text-[#593E2E]">Bookshelves</h1>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
+      
       {/* Want To Read (lijevo) */}
       <div className="bg-[#F9F6F3] rounded-xl p-5 shadow">
         <h2 className="flex items-center gap-2 font-semibold text-base mb-4">
@@ -268,10 +266,7 @@ return (
             <span className="inline-block rounded-full bg-[#DBF1DD] px-2 py-1 text-xs font-bold text-[#599C66]">
               Currently Reading
             </span>
-          </h2>
-          {/* <button className="w-full py-2 mb-5 rounded border bg-white text-[#599C66] font-semibold hover:bg-[#E6F0E6] transition">
-            + Add A New Book
-          </button> */}
+          </h2>        
           <div>
             {currentlyReading.length === 0 ? (
               <div className="text-gray-400 text-sm italic">Nothing here yet…</div>

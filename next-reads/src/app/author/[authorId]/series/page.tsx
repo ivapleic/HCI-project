@@ -45,10 +45,10 @@ const AuthorSeriesPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-lg p-6">
-        <h1 className="text-3xl font-bold mb-6">All Series by {fields.fullName}</h1>
+      <div className="sm:bg-white sm:rounded-2xl sm:shadow-lg p-6">
+        <h1 className="text-3xl font-bold mb-6 text-[#593E2E]">All Series by {fields.fullName}</h1>
         {series.length === 0 ? (
-          <div className="text-sm text-gray-500">No series available for this author.</div>
+          <div className="text-sm text-[#593E2E]">No series available for this author.</div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {currentSeries.map((serie, index) => (

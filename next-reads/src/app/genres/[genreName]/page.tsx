@@ -77,7 +77,7 @@ export default function GenrePage() {
   const description = genre?.fields?.description || "No description available.";
 
   return (
-    <div
+   <div
       id="page-top"
       className="
         w-full
@@ -96,8 +96,8 @@ export default function GenrePage() {
         <div className="text-center text-lg">Loading...</div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 justify-center mx-auto md:justify-normal w-full">
-            <div className="md:col-span-2 bg-white p-6 rounded-lg shadow-md">
+          <div className="grid grid-cols-1 md:grid-cols-3 sm:gap-5 justify-center mx-auto md:justify-normal w-full">
+            <div className="md:col-span-2 md:bg-white p-6 sm:rounded-lg sm:shadow-md">
               {/* Breadcrumb inside left div above heading */}
               <div className="mb-4 text-gray-600 text-sm select-none flex flex-wrap gap-2">
                 <Link
@@ -129,7 +129,8 @@ export default function GenrePage() {
                     New Releases
                   </Link>
                 </h2>
-                <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
+
+                <div className="!grid grid-cols-3 md:grid-cols-5 gap-4 justify-start [justify-items:start] [align-items:start] text-left">
                   {(() => {
                     const currentYear = new Date().getFullYear();
                     const prevYear = currentYear - 1;
@@ -154,11 +155,13 @@ export default function GenrePage() {
                           <Link
                             href={`/books/${book.sys.id}`}
                             key={book.sys.id}
+                            className="block"
                           >
+                            {/* ⬇️ IMG kao block da ga text-align ne centrira */}
                             <img
                               src={book.fields.coverImage.fields.file.url}
                               alt={book.fields.title}
-                              className="object-cover rounded-md aspect-[0.7] w-[90px] md:w-auto cursor-pointer hover:opacity-80 transition-opacity duration-300"
+                              className="block object-cover rounded-md aspect-[0.7] w-[90px] md:w-auto cursor-pointer hover:opacity-80 transition-opacity duration-300"
                             />
                           </Link>
                         ))}
@@ -196,7 +199,7 @@ export default function GenrePage() {
 
                 {filteredLists.length > 0 ? (
                   <>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
                       {filteredLists.slice(0, 6).map((list: any) => (
                         <ItemGrid
                           key={list.sys.id}
@@ -237,7 +240,7 @@ export default function GenrePage() {
                     Books of this Genre
                   </Link>
                 </h2>
-                <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
+                <div className="grid grid-cols-4 md:grid-cols-5 gap-4">
                   {books.length > 0 ? (
                     <>
                       {books.slice(0, 15).map((book) => (
@@ -251,14 +254,18 @@ export default function GenrePage() {
                       ))}
 
                       {books.length > 15 && (
-                        <div className="flex justify-end mt-2 col-span-3 md:col-span-5">
-                          <Link
-                            href={`/books?genre=${genreName}`}
-                            className="text-sm text-[#593E2E] hover:underline flex items-center"
-                          >
-                            More books from this genre
-                            <span className="ml-1 text-lg leading-none">→</span>
-                          </Link>
+                        <div className="mt-2 col-span-4 md:col-span-5">
+                          <div className="flex justify-end">
+                            <Link
+                              href={`/books?genre=${genreName}`}
+                              className="text-sm text-[#593E2E] hover:underline flex items-center"
+                            >
+                              More books from this genre
+                              <span className="ml-1 text-lg leading-none">
+                                →
+                              </span>
+                            </Link>
+                          </div>
                         </div>
                       )}
                     </>
