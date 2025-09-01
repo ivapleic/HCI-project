@@ -7,10 +7,11 @@ const mgmtClient = contentfulManagement.createClient({
   accessToken: ACCESS_TOKEN,
 });
 
+// Dodavanje knjige u korisničku kategoriju (svi nizovi, uključuju currentlyReading)
 export async function addBookToUserCategory(
   userId: string,
   bookId: string,
-  category: string // može biti "" za uklanjanje
+  category: string // može biti "" za uklanjanje iz favorite
 ) {
   const space = await mgmtClient.getSpace(SPACE_ID);
   const environment = await space.getEnvironment("master");
@@ -25,7 +26,7 @@ export async function addBookToUserCategory(
   };
 
   if (category === "") {
-    // ukloni knjigu iz favorite niza
+    // ukloni knjigu iz favourites niza
     const favourites = userEntry.fields["favourites"]?.["en-US"] ?? [];
     const updatedFavourites = favourites.filter((item: any) => item.sys.id !== bookId);
     userEntry.fields["favourites"] = { "en-US": updatedFavourites };
@@ -33,33 +34,22 @@ export async function addBookToUserCategory(
     const contentfulField = fieldMapping[category];
     if (!contentfulField) throw new Error(`Invalid category: ${category}`);
 
-    if (category === "currentlyReading") {
-      userEntry.fields[contentfulField] = {
-        "en-US": {
-          sys: {
-            type: "Link",
-            linkType: "Entry",
-            id: bookId,
-          },
-        },
-      };
-    } else {
-      const currentBooks: any[] = Array.isArray(userEntry.fields[contentfulField]?.["en-US"])
-        ? userEntry.fields[contentfulField]["en-US"]
-        : [];
+    // Svi su sada nizovi (uključujući currentlyReading)
+    const currentBooks: any[] = Array.isArray(userEntry.fields[contentfulField]?.["en-US"])
+      ? userEntry.fields[contentfulField]["en-US"]
+      : [];
 
-      const alreadyExists = currentBooks.some(item => item.sys.id === bookId);
-      if (!alreadyExists) {
-        currentBooks.push({
-          sys: {
-            type: "Link",
-            linkType: "Entry",
-            id: bookId,
-          },
-        });
-      }
-      userEntry.fields[contentfulField] = { "en-US": currentBooks };
+    const alreadyExists = currentBooks.some(item => item.sys.id === bookId);
+    if (!alreadyExists) {
+      currentBooks.push({
+        sys: {
+          type: "Link",
+          linkType: "Entry",
+          id: bookId,
+        },
+      });
     }
+    userEntry.fields[contentfulField] = { "en-US": currentBooks };
   }
 
   const updated = await userEntry.update();
@@ -68,47 +58,98 @@ export async function addBookToUserCategory(
   console.log(`Book ${bookId} updated in user ${userId}'s category ${category}`);
 }
 
-
-export async function getUserBookCategories (
+// Premještanje knjige iz stare u novu kategoriju (svi nizovi)
+export async function moveBookBetweenCategories(
   userId: string,
-  bookId: string
-): Promise<string[]> {
-  try {
-    const space = await mgmtClient.getSpace(SPACE_ID);
-    const environment = await space.getEnvironment("master");
-    const userEntry = await environment.getEntry(userId);
-    if (!userEntry) throw new Error("User not found");
+  bookId: string,
+  oldCategory: string | null,
+  newCategory: string
+) {
+  const space = await mgmtClient.getSpace(SPACE_ID);
+  const environment = await space.getEnvironment("master");
+  const userEntry = await environment.getEntry(userId);
+  if (!userEntry) throw new Error("User not found");
 
-    const categories: string[] = [];
+  const fieldMapping: Record<string, string> = {
+    wantToRead: "wantToRead",
+    currentlyReading: "currentlyReading",
+    read: "readBooks",
+    favourites: "favourites",
+  };
 
-    // Mapiranje polja u Contentfulu
-    const fieldMapping: Record<string, string> = {
-      wantToRead: "wantToRead",
-      currentlyReading: "currentlyReading",
-      read: "readBooks",
-      favourites: "favourites",
+  // Uklanjanje iz stare kategorije (ako postoji)
+  if (oldCategory && fieldMapping[oldCategory]) {
+    const oldField = fieldMapping[oldCategory];
+
+    const oldBooks: any[] = Array.isArray(userEntry.fields[oldField]?.["en-US"])
+      ? userEntry.fields[oldField]["en-US"]
+      : [];
+
+    userEntry.fields[oldField] = {
+      "en-US": oldBooks.filter(item => item.sys.id !== bookId),
     };
+  }
 
-    // Prođi svako polje i vidi je li bookId unutra
-    for (const [key, contentfulField] of Object.entries(fieldMapping)) {
-      const fieldValue = userEntry.fields[contentfulField]?.["en-US"];
+  // Dodavanje u novu kategoriju (svi nizovi)
+  if (fieldMapping[newCategory]) {
+    const newField = fieldMapping[newCategory];
 
-      if (!fieldValue) continue;
+    const newBooks: any[] = Array.isArray(userEntry.fields[newField]?.["en-US"])
+      ? userEntry.fields[newField]["en-US"]
+      : [];
 
-      if (Array.isArray(fieldValue)) {
-        // polja tipa niz linkova
-        if (fieldValue.some((item: any) => item.sys.id === bookId)) {
-          categories.push(key);
-        }
-      } else if (fieldValue.sys?.id === bookId) {
-        // polje tipa pojedinačni link
-        categories.push(key);
-      }
+    if (!newBooks.some(item => item.sys.id === bookId)) {
+      newBooks.push({
+        sys: {
+          type: "Link",
+          linkType: "Entry",
+          id: bookId,
+        },
+      });
     }
 
-    return categories;
-  } catch (error) {
-    console.error("Error fetching user book categories:", error);
-    return [];
+    userEntry.fields[newField] = {
+      "en-US": newBooks,
+    };
   }
+
+  const updated = await userEntry.update();
+  await updated.publish();
+
+  console.log(`Book ${bookId} moved from ${oldCategory} to ${newCategory} for user ${userId}`);
+}
+
+// Uklanjanje knjige iz kategorije (niz)
+export async function removeBookFromCategory(
+  userId: string,
+  bookId: string,
+  category: string
+) {
+  const space = await mgmtClient.getSpace(SPACE_ID);
+  const environment = await space.getEnvironment("master");
+  const userEntry = await environment.getEntry(userId);
+  if (!userEntry) throw new Error("User not found");
+
+  const fieldMapping: Record<string, string> = {
+    wantToRead: "wantToRead",
+    currentlyReading: "currentlyReading",
+    read: "readBooks",
+    favourites: "favourites",
+  };
+
+  const contentfulField = fieldMapping[category];
+  if (!contentfulField) throw new Error(`Invalid category: ${category}`);
+
+  const currentBooks: any[] = Array.isArray(userEntry.fields[contentfulField]?.["en-US"])
+    ? userEntry.fields[contentfulField]["en-US"]
+    : [];
+
+  const updatedBooks = currentBooks.filter(item => item.sys.id !== bookId);
+
+  userEntry.fields[contentfulField] = { "en-US": updatedBooks };
+
+  const updated = await userEntry.update();
+  await updated.publish();
+
+  console.log(`Book ${bookId} removed from category ${category} for user ${userId}`);
 }

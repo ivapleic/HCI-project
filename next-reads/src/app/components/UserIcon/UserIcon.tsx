@@ -70,7 +70,7 @@ const ProfileIcon = () => {
         aria-haspopup="menu"
         aria-expanded={dropdownOpen}
       >
-        <span className="text-[#593E2E] font-bold select-none">{initials}</span>
+        <span className="text-[#593E2E] font-bold select-none hover:cursor-pointer">{initials}</span>
       </button>
 
       {dropdownOpen && (

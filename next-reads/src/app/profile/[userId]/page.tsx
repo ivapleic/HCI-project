@@ -21,20 +21,29 @@ export default async function ProfilePage({
   const currentlyReading = user.fields.currentlyReading ? [user.fields.currentlyReading] : [];
   const wantToRead = user.fields.wantToRead?.slice(0, 3) || [];
 
-  const renderBookPreview = (book: any) => {
-    const imgUrl = book.fields.coverImage?.fields?.file?.url
-      ? `https:${book.fields.coverImage.fields.file.url}`
-      : "/placeholder_book.png";
+const renderBookPreview = (book: any) => {
+  if (!book || !book.fields) {
+    // Ako book ili book.fields ne postoji, vrati fallback
     return (
-      <Link key={book.sys.id} href={`/books/${book.sys.id}`}>
-        <img
-          src={imgUrl}
-          alt={book.fields.title}
-          className="w-20 h-28 object-cover rounded-md shadow cursor-pointer"
-        />
-      </Link>
+      <div key={book?.sys?.id || Math.random()} className="w-20 h-28 bg-gray-200 rounded-md" />
     );
-  };
+  }
+
+  const imgUrl = book.fields.coverImage?.fields?.file?.url
+    ? `https:${book.fields.coverImage.fields.file.url}`
+    : "/placeholder_book.png";
+
+  return (
+    <Link key={book.sys.id} href={`/books/${book.sys.id}`}>
+      <img
+        src={imgUrl}
+        alt={book.fields.title}
+        className="w-20 h-28 object-cover rounded-md shadow cursor-pointer"
+      />
+    </Link>
+  );
+};
+
 
   return (
     <div className="p-8 flex flex-col md:flex-row justify-center bg-gray-50 min-h-screen">

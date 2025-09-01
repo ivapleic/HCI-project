@@ -60,7 +60,7 @@ export interface TypeUserFields {
   favourites?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeBooksSkeleton>>;
   wantToRead?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeBooksSkeleton>>;
   readBooks?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeBooksSkeleton>>;
-  currentlyReading?: EntryFieldTypes.EntryLink<TypeBooksSkeleton>;
+  currentlyReading?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeBooksSkeleton>>;
 }
 
 export type TypeUserSkeleton = EntrySkeletonType<TypeUserFields, "user">;
