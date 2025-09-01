@@ -130,7 +130,7 @@ const HomePage = () => {
   return (
     <main
       ref={scrollersRef}
-      className="flex items-center min-h-screen flex-col px-6 pt-10 md:p-10 bg-white"
+      className="flex items-center min-h-screen flex-col md:px-20 pt-10 md:p-10 bg-white"
     >
       {/* HERO SEKCIJA */}
       <div className="w-full max-w-screen-2xl rounded-xl overflow-hidden bg-gradient-to-tl from-[#f2cab3]/30 to-[#fff]/5 shadow mb-8 p-8 flex flex-col md:flex-row items-center justify-between">

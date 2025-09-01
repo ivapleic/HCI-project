@@ -2,7 +2,6 @@ import contentfulClient from "../../../lib/contentfulClient";
 import { TypeUserSkeleton } from "../../../content-types";
 
 
-
 // Dohvat korisnika po ID-u
 export const getUserById = async (userId: string) => {
   try {
@@ -80,3 +79,19 @@ export const getWantToReadByUserId = async (userId: string) => {
     return [];
   }
 };
+
+export async function toggleFavourite(userId: string, bookId: string, isFavourite: boolean) {
+  const res = await fetch("/api/my-books/updateCategory", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      userId,
+      bookId,
+      category: isFavourite ? "favourites" : "",
+    }),
+  });
+  if (!res.ok) {
+    throw new Error("Failed to update favourite status");
+  }
+  return await res.json();
+}

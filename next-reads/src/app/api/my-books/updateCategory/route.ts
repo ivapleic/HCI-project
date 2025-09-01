@@ -4,9 +4,10 @@ import { addBookToUserCategory } from "../../../../lib/categoriesApi";
 export async function POST(request: Request) {
   try {
     const { userId, bookId, category } = await request.json();
-    if (!userId || !bookId || !category) {
-      return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
-    }
+   if (!userId || !bookId || category === undefined || category === null) {
+  return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
+}
+
 
     await addBookToUserCategory(userId, bookId, category);
 

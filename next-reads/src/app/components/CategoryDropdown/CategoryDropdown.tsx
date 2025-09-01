@@ -30,16 +30,14 @@ export default function CategoryDropdown({
   function toggleDropdown() {
     setDropdownOpen((open) => !open);
   }
+
   useEffect(() => {
-    // Primjer: dohvat statusa iz localStorage ili API
     const checkFavoriteStatus = async () => {
       try {
         const userJson = localStorage.getItem("user");
         if (!userJson) return;
-
         const userObj = JSON.parse(userJson);
 
-        // Poziv api endpointa da vidi da li je knjiga favorita za tog usera (pretpostavka)
         const res = await fetch(
           `/api/my-books/isFavorite?userId=${userObj.id}&bookId=${bookId}`
         );
@@ -74,47 +72,32 @@ export default function CategoryDropdown({
     };
   }, [dropdownOpen]);
 
-  const toggleFavorite = async () => {
-    const newFavorite = !favorite;
-    setFavorite(newFavorite);
+const toggleFavorite = async () => {
+  const newFavorite = !favorite; // suprotno trenutno stanje
+  setFavorite(newFavorite); // odmah postavi lokalno stanje radi UI responza
 
-    const userJson = localStorage.getItem("user");
-    if (!userJson) {
-      toast.error("User not logged in", {
-        position: "bottom-left",
-        autoClose: 2000,
-      });
-      return;
-    }
-    const userObj = JSON.parse(userJson);
+  const userJson = localStorage.getItem("user");
+  if (!userJson) {
+    toast.error("User not logged in", { position: "bottom-left", autoClose: 2000 });
+    return;
+  }
+  const userObj = JSON.parse(userJson);
 
-    try {
-      const res = await fetch("/api/my-books/updateCategory", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: userObj.id,
-          bookId,
-          category: newFavorite ? "favourites" : "", // "" može značiti ukloni kategoriju
-        }),
-      });
-      if (!res.ok) throw new Error("Failed to update favorite category");
-
-      toast.success(
-        `Book ${newFavorite ? "added to" : "removed from"} favorites!`,
-        {
-          position: "bottom-left",
-          autoClose: 2000,
-        }
-      );
-    } catch (error) {
-      toast.error("Failed to update favorite category", {
-        position: "bottom-left",
-        autoClose: 2000,
-      });
-      setFavorite(!newFavorite);
-    }
-  };
+  try {
+    const res = await fetch("/api/my-books/updateCategory", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: userObj.id,
+        bookId,
+        category: newFavorite ? "favourites" : "", 
+      }),
+    });
+    if (!res.ok) throw new Error("Failed to update favorite category");
+  } catch (error) {
+    setFavorite(!newFavorite); // vraća stanje na prošlo ako update ne uspije
+  }
+};
 
   async function handleSelect(categoryId: string) {
     setDropdownOpen(false);

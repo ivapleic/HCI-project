@@ -10,26 +10,30 @@ const mgmtClient = contentfulManagement.createClient({
 export async function addBookToUserCategory(
   userId: string,
   bookId: string,
-  category: "wantToRead" | "currentlyReading" | "read" | "favourites"
+  category: string // može biti "" za uklanjanje
 ) {
-  try {
-    const space = await mgmtClient.getSpace(SPACE_ID);
-    const environment = await space.getEnvironment("master");
-    const userEntry = await environment.getEntry(userId);
-    if (!userEntry) throw new Error("User not found");
+  const space = await mgmtClient.getSpace(SPACE_ID);
+  const environment = await space.getEnvironment("master");
+  const userEntry = await environment.getEntry(userId);
+  if (!userEntry) throw new Error("User not found");
 
-    // Mapiranje iz UI naziva kategorije u stvarna Contentful polja
-    const fieldMapping: Record<string, string> = {
-      wantToRead: "wantToRead",
-      currentlyReading: "currentlyReading",
-      read: "readBooks",
-      favourites: "favourites", // dodano polje za favorite kategoriju
-    };
+  const fieldMapping: Record<string, string> = {
+    wantToRead: "wantToRead",
+    currentlyReading: "currentlyReading",
+    read: "readBooks",
+    favourites: "favourites",
+  };
 
+  if (category === "") {
+    // ukloni knjigu iz favorite niza
+    const favourites = userEntry.fields["favourites"]?.["en-US"] ?? [];
+    const updatedFavourites = favourites.filter((item: any) => item.sys.id !== bookId);
+    userEntry.fields["favourites"] = { "en-US": updatedFavourites };
+  } else {
     const contentfulField = fieldMapping[category];
+    if (!contentfulField) throw new Error(`Invalid category: ${category}`);
 
     if (category === "currentlyReading") {
-      // Polje je pojedinačna referenca (pretpostavka da takvo koristite)
       userEntry.fields[contentfulField] = {
         "en-US": {
           sys: {
@@ -40,12 +44,11 @@ export async function addBookToUserCategory(
         },
       };
     } else {
-      // Polja su nizovi linkova
       const currentBooks: any[] = Array.isArray(userEntry.fields[contentfulField]?.["en-US"])
         ? userEntry.fields[contentfulField]["en-US"]
         : [];
 
-      const alreadyExists = currentBooks.some((item) => item.sys.id === bookId);
+      const alreadyExists = currentBooks.some(item => item.sys.id === bookId);
       if (!alreadyExists) {
         currentBooks.push({
           sys: {
@@ -57,16 +60,14 @@ export async function addBookToUserCategory(
       }
       userEntry.fields[contentfulField] = { "en-US": currentBooks };
     }
-
-    const updated = await userEntry.update();
-    await updated.publish();
-
-    console.log(`Book ${bookId} added to user ${userId}'s category ${category}`);
-  } catch (error) {
-    console.error("Error updating user category:", error);
-    throw error;
   }
+
+  const updated = await userEntry.update();
+  await updated.publish();
+
+  console.log(`Book ${bookId} updated in user ${userId}'s category ${category}`);
 }
+
 
 export async function getUserBookCategories (
   userId: string,
