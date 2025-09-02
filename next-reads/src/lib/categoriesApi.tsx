@@ -153,3 +153,31 @@ export async function removeBookFromCategory(
 
   console.log(`Book ${bookId} removed from category ${category} for user ${userId}`);
 }
+
+// Nova funkcija: Dohvaća kategorije knjige za određenog korisnika
+export async function getUserBookCategories(userId: string, bookId: string) {
+  const space = await mgmtClient.getSpace(SPACE_ID);
+  const environment = await space.getEnvironment("master");
+  const userEntry = await environment.getEntry(userId);
+  
+  if (!userEntry) throw new Error("User not found");
+
+  const categories: string[] = [];
+  const categoryFields = {
+    wantToRead: "wantToRead",
+    currentlyReading: "currentlyReading",
+    read: "readBooks",
+    favourites: "favourites",
+  };
+
+  // Provjeri svaku kategoriju
+  for (const [categoryKey, fieldName] of Object.entries(categoryFields)) {
+    const booksInCategory: any[] = userEntry.fields[fieldName]?.["en-US"] || [];
+    
+    if (booksInCategory.some(book => book.sys.id === bookId)) {
+      categories.push(categoryKey);
+    }
+  }
+
+  return categories;
+}
