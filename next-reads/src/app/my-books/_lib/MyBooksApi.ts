@@ -6,7 +6,7 @@ import { TypeUserSkeleton } from "../../../content-types";
 export const getUserById = async (userId: string) => {
   try {
     const entry = await contentfulClient.withoutUnresolvableLinks.getEntry<TypeUserSkeleton>(userId, {
-      include: 3, // povećaj dubinu da pokriješ autore unutar knjiga
+      include: 3, 
     });
     console.log("Fetched user with expanded references:", entry);
     return entry;

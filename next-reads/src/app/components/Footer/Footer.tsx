@@ -14,7 +14,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#F9F3EE] py-6 px-8 relative">
+    <footer className="bg-[#F9F3EE] py-6 px-8 relative sm:mt-30 ">
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center">
         <p className="text-sm text-[#593E2E] mb-4 md:mb-0">
           &copy; {new Date().getFullYear()} NextReads. All rights reserved.

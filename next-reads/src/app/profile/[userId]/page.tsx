@@ -17,9 +17,9 @@ export default async function ProfilePage({
     : null;
 
   // Preview knjiga - prikaz do 3 knjige iz kategorija
-  const favourites = user.fields.favourites?.slice(0, 3) || [];
-  const currentlyReading = user.fields.currentlyReading ? [user.fields.currentlyReading] : [];
-  const wantToRead = user.fields.wantToRead?.slice(0, 3) || [];
+  const favourites = user.fields.favourites?.slice(0, 5) || [];
+  const currentlyReading = user.fields.currentlyReading?.slice(0, 5) || [];
+  const wantToRead = user.fields.wantToRead?.slice(0, 5) || [];
 
 const renderBookPreview = (book: any) => {
   if (!book || !book.fields) {

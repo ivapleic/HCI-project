@@ -47,9 +47,9 @@ const AuthorBooksPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="sm:bg-white sm:rounded-2xl sm:shadow-lg p-6">
-        <h1 className="text-3xl font-bold mb-6 text-[#593e2e]">All Books by {fields.fullName}</h1>
+    <div className="max-w-4xl mx-auto px-4 my-6 ">
+      <div className="sm:bg-white sm:rounded-2xl sm:shadow-lg py-6 sm:p-6">
+        <h2 className="text-2xl font-bold mb-6 text-[#593e2e]">All Books by {fields.fullName}</h2>
 
         <div className="grid grid-cols-1 gap-6">
           {currentBooks.map((book) => (

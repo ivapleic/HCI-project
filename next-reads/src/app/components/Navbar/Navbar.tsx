@@ -10,6 +10,7 @@ import SearchBar from "../SearchBar/SearchBar";
 import MegaMenu from "../MegaMenu/MegaMenu";
 import { useAuth } from "../../../lib/AuthContext";
 import ProfileIcon from "../UserIcon/UserIcon";
+import { getUserById } from "@/app/my-books/_lib/MyBooksApi";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -17,8 +18,9 @@ export function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isBrowseDropdownOpen, setIsBrowseDropdownOpen] = useState(false);
   const megaMenuRef = useRef(null);
-const browseBooksRef = useRef<HTMLDivElement>(null);
-const [dropdownPos, setDropdownPos] = useState<{left: number, width: number} | null>(null);
+  const browseBooksRef = useRef<HTMLDivElement>(null);
+  const [dropdownPos, setDropdownPos] = useState<{left: number, width: number} | null>(null);
+  const [userObject, setUserObject] = useState<any>(null); 
 
 
   useClickOutside(megaMenuRef, () => setIsMegaMenuOpen(false));
@@ -27,6 +29,27 @@ const [dropdownPos, setDropdownPos] = useState<{left: number, width: number} | n
     "px-3 py-2 text-sm whitespace-nowrap font-medium rounded hover:text-[#593E2E] transition-colors";
 
   const { user, isLoggedIn } = useAuth();
+
+// Fetch user data when component mounts or user changes
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (user?.id) {
+        try {
+          const userData = await getUserById(user.id);
+          setUserObject(userData);
+          console.log("User object in Navbar:", userData);
+        } catch (error) {
+          console.error("Failed to fetch user:", error);
+        }
+      }
+    };
+
+    fetchUser();
+  }, [user?.id]); 
+
+  const toggleMegaMenu = () => {
+    setIsMegaMenuOpen(prev => !prev);
+  };
 
   useEffect(() => {
     if (isMegaMenuOpen && browseBooksRef.current) {
@@ -38,6 +61,7 @@ const [dropdownPos, setDropdownPos] = useState<{left: number, width: number} | n
 
   return (
     <nav className="border-b border-gray-300 bg-white sticky top-0 z-50">
+
       {/* MOBILE NAV */}
       <div className="flex flex-col min-[851px]:hidden">
         <div className="flex items-center justify-between px-3 py-2">
@@ -170,7 +194,9 @@ const [dropdownPos, setDropdownPos] = useState<{left: number, width: number} | n
       </div>
 
       {/* DESKTOP NAVBAR */}
-      <div className="hidden min-[851px]:flex items-center justify-between px-4 sm:px-8 lg:px-17 py-6 relative">
+      <div className="hidden min-[851px]:flex items-center
+       justify-between px-4 sm:px-8 lg:px-17 py-6 relative">
+
     <Link href="/">
       <Logo className="text-2xl" />
     </Link>
@@ -207,43 +233,49 @@ const [dropdownPos, setDropdownPos] = useState<{left: number, width: number} | n
       </div>
 
       {/* MegaMenu & Strelica */}
-    {isMegaMenuOpen && dropdownPos && (
-  <>
-    {/* Strelica - SAD odmah ispod navbara */}
-    <div
-      style={{
-        position: "fixed",
-        left: `${dropdownPos.left}px`,
-        top: `68px`,           // <-- PROMIJENI na manju vrijednost!
-        zIndex: 60,
-        pointerEvents: "none"
-      }}
-    >
-      <svg width="32" height="20" viewBox="0 0 32 20">
-        <polygon points="16,0 32,20 0,20" fill="white" stroke="#e5e7eb" strokeWidth="1" />
-      </svg>
-    </div>
-    {/* MegaMenu panel bliže vrhu */}
-    <div
-      style={{
-        position: "fixed",
-        left: `${dropdownPos.left}px`,
-        top: `88px`,         // <-- PROMIJENI na manju vrijednost!
-        transform: "translateX(-50%)",
-        zIndex: 50,
-        minWidth: 320,
-        width: 700,
-      }}
-      className="pointer-events-auto"
-    >
-      <MegaMenu
-        isOpen={true}
-        onClose={() => setIsMegaMenuOpen(false)}
-        customWidth="w-full"
-      />
-    </div>
-  </>
-)}
+          {isMegaMenuOpen && dropdownPos && (
+            <>
+              {/* Strelica - SAD odmah ispod navbara */}
+              <div
+                style={{
+                  position: "fixed",
+                  left: `${dropdownPos.left}px`,
+                  top: `68px`,
+                  zIndex: 60,
+                  pointerEvents: "none"
+                }}
+              >
+                <svg width="32" height="20" viewBox="0 0 32 20">
+                  <polygon points="16,0 32,20 0,20" fill="white" stroke="#e5e7eb" strokeWidth="1" />
+                </svg>
+              </div>
+              {/* MegaMenu panel bliže vrhu */}
+              <div
+                style={{
+                  position: "fixed",
+                  left: `${dropdownPos.left}px`,
+                  top: `88px`,
+                  transform: "translateX(-50%)",
+                  zIndex: 50,
+                  minWidth: 320,
+                  width: 700,
+                }}
+                className="pointer-events-auto"
+              >
+             
+<MegaMenu
+  isOpen={isMegaMenuOpen}
+  onClose={() => setIsMegaMenuOpen(false)}
+  customWidth="w-full"
+  userFavoriteGenres={
+    userObject?.fields?.favoriteGenres?.map((genre: any) => 
+      genre.fields.name
+    ) || []
+  } 
+/>
+              </div>
+            </>
+          )}
 
 
       {/* My Books */}
@@ -264,7 +296,7 @@ const [dropdownPos, setDropdownPos] = useState<{left: number, width: number} | n
     </ul>
 
     <div className="flex items-center gap-x-4">
-      <div className="w-80">
+      <div className="w-100">
         <SearchBar />
       </div>
       {isLoggedIn ? (

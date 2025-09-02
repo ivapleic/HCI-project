@@ -1,3 +1,4 @@
+// useClickOutside.ts
 import { useEffect } from "react";
 
 export function useClickOutside(
@@ -5,13 +6,19 @@ export function useClickOutside(
   callback: () => void
 ) {
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         callback();
       }
     };
 
+    // Add both mouse and touch events
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
   }, [ref, callback]);
 }

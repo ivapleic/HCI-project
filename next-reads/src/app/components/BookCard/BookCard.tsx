@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import CategoryDropdown from "../CategoryDropdown/CategoryDropdown";
 
 export interface BookCardProps {
@@ -17,42 +18,57 @@ export interface BookCardProps {
 }
 
 export default function BookCard({ book }: BookCardProps) {
+  const router = useRouter();
   const coverImageUrl = book.coverImageUrl ?? "/placeholder_book.png";
-
-  // Show more/less state
   const [expanded, setExpanded] = useState(false);
   const hasLongDesc = (book.description?.trim().length ?? 0) > 160;
 
+  // Handle card click
+  const handleCardClick = useCallback((e: React.MouseEvent) => {
+    // Check if the click was on an excluded element
+    const isExcludedElement = 
+      e.target instanceof HTMLElement && 
+      (e.target.closest('.category-dropdown') || 
+       e.target.closest('.author-link') ||
+       e.target.closest('.show-more-btn'));
+    
+    if (!isExcludedElement) {
+      router.push(`/books/${book.id}`);
+    }
+  }, [book.id, router]);
+
   return (
-    <div className="relative flex items-start gap-3 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition">
-      {/* Dropdown u gornjem desnom kutu */}
-      <div className="absolute top-3 right-3 z-10">
+    <div 
+      className="relative flex items-start gap-3 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition cursor-pointer"
+      onClick={handleCardClick}
+    >
+      {/* Dropdown in top right corner */}
+      <div className="absolute top-3 right-3 z-10 category-dropdown" onClick={e => e.stopPropagation()}>
         <CategoryDropdown bookId={book.id} variant="icon" />
       </div>
 
-      <Link href={`/books/${book.id}`} className="flex-shrink-0 cursor-pointer">
+      {/* Book cover */}
+      <div className="flex-shrink-0">
         <img
           src={coverImageUrl}
           alt={book.title}
-          className="w-20 h-28 md:w-24 md:h-32 object-cover rounded-md"
+          className="w-16 h-24 md:w-24 md:h-32 object-cover rounded-md"
         />
-      </Link>
+      </div>
 
+      {/* Book details */}
       <div className="flex flex-col flex-1 min-w-0">
-        {/* Naslov: malo manji (mob: base, md: lg) */}
-        <Link
-          href={`/books/${book.id}`}
-          className="text-base md:text-lg leading-tight font-semibold text-gray-900 hover:text-[#593E2E] hover:underline cursor-pointer break-words max-w-[170px] md:max-w-[280px] truncate"
-          style={{ wordBreak: "break-word" }}
-        >
+        {/* Book title */}
+        <h3 className="text-sm md:text-lg leading-tight font-semibold text-gray-900 break-words max-w-[170px] md:max-w-[280px]">
           {book.title}
-        </Link>
+        </h3>
 
-        {/* Autor: smanjeno (mob: xs, md: ~13px) */}
+        {/* Author */}
         {book.authorId && book.authorName ? (
           <Link
             href={`/author/${book.authorId}`}
-            className="text-xs md:text-[13px] text-gray-700 mt-1 mb-1 hover:text-[#593E2E] hover:underline leading-5"
+            className="author-link text-xs md:text-[13px] text-gray-700 mt-1 mb-1 hover:text-[#593E2E] hover:underline leading-5"
+            onClick={e => e.stopPropagation()}
           >
             by {book.authorName}
           </Link>
@@ -62,7 +78,7 @@ export default function BookCard({ book }: BookCardProps) {
           </p>
         ) : null}
 
-        {/* Opis + Show more/less */}
+        {/* Description */}
         {book.description && (
           <>
             <p
@@ -77,8 +93,11 @@ export default function BookCard({ book }: BookCardProps) {
             {hasLongDesc && (
               <button
                 type="button"
-                onClick={() => setExpanded((v) => !v)}
-                className="self-start mt-1 text-[11px] md:text-xs text-[#593E2E] hover:underline"
+                onClick={e => {
+                  e.stopPropagation();
+                  setExpanded(v => !v);
+                }}
+                className="show-more-btn self-start mt-1 text-[11px] md:text-xs text-[#593E2E] hover:cursor-pointer"
                 aria-expanded={expanded}
                 aria-controls={`desc-${book.id}`}
               >

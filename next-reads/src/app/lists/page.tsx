@@ -120,7 +120,7 @@ const ListsPage = () => {
                   setSearchQuery(e.target.value);
                   if (searchError) setSearchError("");
                 }}
-                className="flex-1 p-2 border-white bg-[#F9F3EE] rounded-md focus:outline-none focus:ring-2 focus:ring-[#593E2E]"
+                className="flex-1 p-2 border-white bg-white sm:bg-[#F9F3EE] rounded-md focus:outline-none focus:ring-2 focus:ring-[#593E2E]"
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               />
               <button

@@ -151,20 +151,20 @@ const toggleFavorite = async () => {
           ref={dropdownRef}
           className={`${
             className ?? ""
-          } relative text-left flex items-center space-x-2`}
+          } relative text-left flex items-center space-x-2 hover:cursor-pointer`}
         >
           <button
             onClick={toggleFavorite}
             aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
             title={favorite ? "Remove from favorites" : "Add to favorites"}
-            className="text-red-600 hover:text-red-700 focus:outline-none cursor-pointer"
+            className="text-red-600 hover:text-red-700 focus:outline-none hover:cursor-pointer"
           >
             {favorite ? <FaHeart size={20} /> : <FaRegHeart size={20} />}
           </button>
 
           <button
             onClick={toggleDropdown}
-            className="bg-[#155449] hover:bg-[#12463a] transition text-white font-semibold py-1 px-3 rounded-md flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#599C66] shadow text-sm"
+            className="bg-[#155449] hover:bg-[#12463a] hover:cursor-pointer transition text-white font-semibold py-1 px-3 rounded-md flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#599C66] shadow text-sm"
             aria-haspopup="true"
             aria-expanded={dropdownOpen}
             aria-label="Open categories menu"
@@ -190,7 +190,7 @@ const toggleFavorite = async () => {
       ) : (
         <div
           ref={dropdownRef}
-          className={`${className ?? ""} relative text-left mt-2 w-full`}
+          className={`${className ?? ""} relative text-left mt-2 w-full hover:cursor-pointer`}
         >
           <div className="flex items-center gap-2 w-full">
             <button
@@ -199,7 +199,7 @@ const toggleFavorite = async () => {
                 favorite ? "Remove from favorites" : "Add to favorites"
               }
               title={favorite ? "Remove from favorites" : "Add to favorites"}
-              className="text-red-600 hover:text-red-700 focus:outline-none shrink-0"
+              className="text-red-600 hover:text-red-700 focus:outline-none shrink-0 hover:cursor-pointer"
             >
               {favorite ? <FaHeart size={20} /> : <FaRegHeart size={20} />}
             </button>

@@ -55,10 +55,11 @@ const AuthorPage = () => {
       id="page-top"
       className="
         w-full
-        mt-6
+        sm:mt-6
+        mb-0
+        sm:mb-20
         px-0
         md:px-20
-        mx-0
         md:mx-auto
         md:max-w-[1200px]
         flex
