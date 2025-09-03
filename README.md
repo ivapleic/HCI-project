@@ -18,7 +18,7 @@
 
 ### Semester Project
 
-- Link to your production version: [**Production Version**](https://hci-project-lfs7fhaj7-iva-pleics-projects.vercel.app/) 
+- Link to your production version: [**Production Version**](https://hci-project-c8xcj6udv-iva-pleics-projects.vercel.app/) 
 - Link to your final report: [**Final Report**](https://www.notion.so/NextReads-Search-discover-and-organize-your-books-2610424e489a80b7b89dcde756d059a2?source=copy_link)
 <!-- Add more as necessary -->
 
