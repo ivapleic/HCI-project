@@ -32,14 +32,23 @@ const BookItem = ({
   const isActionInProgress = actionInProgress?.includes(bookId) || false;
 
   return (
-    <div className="bg-white rounded-lg shadow flex items-start gap-3 p-4 mb-4 relative">
+    <div className="bg-neutral-white rounded-lg shadow flex items-start gap-3 p-4 mb-4 relative">
       <a
         href={`/books/${bookId}`}
         className="flex-shrink-0 block w-16 h-24 rounded overflow-hidden"
       >
-        {coverImageUrl && (
+        {coverImageUrl ? (
           <img
             src={`https:${coverImageUrl}`}
+            alt={bookTitle}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = "/assets/book-placeholder.png";
+            }}
+          />
+        ) : (
+          <img
+            src="/assets/book-placeholder.png"
             alt={bookTitle}
             className="w-full h-full object-cover"
           />
@@ -49,42 +58,32 @@ const BookItem = ({
       <div className="flex-1">
         <a
           href={`/books/${bookId}`}
-          className="font-semibold text-[#8B5E3C] hover:underline"
+          className="font-semibold text-neutral-dark hover:underline"
         >
           {bookTitle}
         </a>
 
         {author && author.fields.fullName && (
-          <div className="text-xs text-gray-700 mt-1">
+          <div className="text-xs text-neutral mt-1">
             <a
               href={`/author/${authorId}`}
-              className="hover:underline text-gray-700"
+              className="hover:underline text-neutral"
             >
               {author.fields.fullName}
             </a>
           </div>
         )}
 
-        <div className="text-xs text-yellow-500 mb-1">★★★★★</div>
 
-        {type === "currentlyReading" && (
-          <div className="h-2 w-full bg-gray-200 rounded">
-            <div
-              className="bg-orange-400 h-2 rounded"
-              style={{ width: "20%" }}
-            />
-          </div>
-        )}
-
-        <div className="mt-3 flex gap-2">
+        <div className="mt-3 flex gap-2 flex-wrap">
           {type !== "wantToRead" && (
             <button
               onClick={() => !isActionInProgress && onCategoryChange(bookId, type, "wantToRead")}
               disabled={isActionInProgress}
-              className={`py-1 px-3 text-xs rounded bg-[#f7e8c9] transition ${
+              className={`py-1 px-3 text-xs rounded bg-accent-pink text-neutral-dark transition ${
                 isActionInProgress 
                   ? "opacity-50 cursor-not-allowed" 
-                  : "hover:bg-gray-100 hover:cursor-pointer"
+                  : "hover:bg-neutral-light hover:cursor-pointer"
               }`}
             >
               {isActionInProgress ? "Processing..." : "Want to Read"}
@@ -94,7 +93,7 @@ const BookItem = ({
             <button
               onClick={() => !isActionInProgress && onCategoryChange(bookId, type, "currentlyReading")}
               disabled={isActionInProgress}
-              className={`py-1 px-3 text-xs rounded bg-[#cde7cd] transition ${
+              className={`py-1 px-3 text-xs rounded bg-[#cde7cd] text-neutral-dark transition ${
                 isActionInProgress 
                   ? "opacity-50 cursor-not-allowed" 
                   : "hover:bg-green-200 hover:cursor-pointer"
@@ -107,7 +106,7 @@ const BookItem = ({
             <button
               onClick={() => !isActionInProgress && onCategoryChange(bookId, type, "read")}
               disabled={isActionInProgress}
-              className={`py-1 px-3 text-xs rounded bg-[#c6d5e9] transition ${
+              className={`py-1 px-3 text-xs rounded bg-[#c6d5e9] text-neutral-dark transition ${
                 isActionInProgress 
                   ? "opacity-50 cursor-not-allowed" 
                   : "hover:bg-blue-200 hover:cursor-pointer"

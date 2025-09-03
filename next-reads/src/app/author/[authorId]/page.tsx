@@ -151,25 +151,27 @@ const AuthorPage = () => {
           )}
         </div>
 
-        {/* Series */}
-        <div className="mb-10">
-          <h2 className="text-xl font-semibold mb-4 text-neutral-dark">
-            <Link
-              href={`/author/${authorId}/series`}
-              className="hover:underline"
-            >
-              Series by {fields.fullName}
-            </Link>
-          </h2>
-          <ItemGrid
-            items={series}
-            itemType="series"
-            title=""
-            maxDisplay={10}
-            moreLink={`/author/${authorId}/series`}
-            moreLabel="More series by"
-          />
-        </div>
+      {/* Series */}
+<div className="mb-10">
+  <h2 className="text-xl font-semibold mb-4 text-neutral-dark">
+    <Link
+      href={`/author/${authorId}/series`}
+      className="hover:underline"
+    >
+      Series by {fields.fullName}
+    </Link>
+  </h2>
+  <ItemGrid
+    items={series}
+    itemType="series"
+    title=""
+    maxDisplay={10}
+    columns={2} // 👈 Dodano, sada 2 kolone na mobitelu
+    moreLink={`/author/${authorId}/series`}
+    moreLabel="More series by"
+  />
+</div>
+
       </div>
 
       {/* DESKTOP LAYOUT - White background */}
@@ -240,19 +242,15 @@ const AuthorPage = () => {
             </Link>
           </h2>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-            {series.slice(0, 6).map((s) => (
-              <ItemGrid
-                key={s.sys.id}
-                items={[s]}
-                itemType="series"
-                title=""
-                maxDisplay={1}
-                moreLink={`/author/${authorId}/series`}
-                moreLabel="More series by"
-              />
-            ))}
-          </div>
+          <ItemGrid
+            items={series.slice(0, 6)}
+            itemType="series"
+            title=""
+            maxDisplay={6}
+            columns={3} // ➝ sad lijepo podijeli u 3 kolone
+            moreLink={`/author/${authorId}/series`}
+            moreLabel="More series by"
+          />
         </div>
       </div>
     </div>

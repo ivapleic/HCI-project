@@ -33,7 +33,7 @@ const CombinedReadingSection = ({
         </h2>
         <div>
           {currentlyReading.length === 0 ? (
-            <div className="text-gray-400 text-sm italic">
+            <div className="text-neutral text-sm italic">
               Nothing here yet…
             </div>
           ) : (
@@ -58,11 +58,11 @@ const CombinedReadingSection = ({
         </div>
       </div>
 
-      <div className="mt-6 pt-4 border-t border-gray-300">
+      <div className="mt-6 pt-4 border-t border-neutral-light">
         <h3 className="text-sm font-semibold text-[#599C66] mb-2">Read</h3>
         <div>
           {readBooks.length === 0 ? (
-            <div className="text-gray-400 text-sm italic">
+            <div className="text-neutral text-sm italic">
               You have not read any books yet.
             </div>
           ) : (

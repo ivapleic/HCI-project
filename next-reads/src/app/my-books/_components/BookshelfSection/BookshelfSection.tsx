@@ -43,7 +43,7 @@ const BookshelfSection = ({
       </h2>
       <div>
         {books.length === 0 ? (
-          <div className="text-gray-400 text-sm italic">
+          <div className="text-neutral text-sm italic">
             {emptyMessage}
           </div>
         ) : (
@@ -67,14 +67,14 @@ const BookshelfSection = ({
 const getBgColor = (type: Category) => {
   switch (type) {
     case "wantToRead":
-      return "bg-[#F9F6F3]";
+      return "bg-accent-pink";
     case "favourites":
       return "bg-[#F3F6FA]";
     case "currentlyReading":
     case "read":
       return "bg-[#F6FAF6]";
     default:
-      return "bg-gray-100";
+      return "bg-neutral-light";
   }
 };
 

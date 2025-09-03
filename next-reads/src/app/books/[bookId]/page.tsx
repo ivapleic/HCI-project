@@ -232,7 +232,7 @@ const BookDetailPage = () => {
                   href={`/genres/${genre.fields.name
                     .toLowerCase()
                     .replace(/\s+/g, "-")}`}
-                  className="bg-neutral-light hover:bg-accent-pink text-neutral-dark py-1 px-3 rounded-full text-xs"
+                  className="bg-whitek text-neutral-dark py-1 px-3 rounded-full text-xs"
                 >
                   {genre.fields.name}
                 </Link>
@@ -309,24 +309,23 @@ const BookDetailPage = () => {
             <div className="mb-6">{renderDescription()}</div>
 
             {/* Genres */}
-            <div className="mt-6">
-              <h2 className="font-semibold text-left mb-3 text-neutral">
-                Genres
-              </h2>
-              <div className="flex gap-2 flex-wrap">
-                {fields.genre?.map((genre: any) => (
-                  <Link
-                    key={genre.sys.id}
-                    href={`/genres/${genre.fields.name
-                      .toLowerCase()
-                      .replace(/\s+/g, "-")}`}
-                    className="bg-accent-pink py-1 px-3 rounded-full text-xs"
-                  >
-                    {genre.fields.name}
-                  </Link>
-                ))}
-              </div>
+          <div className="mt-10 w-full">
+            <h2 className="font-semibold text-left text-neutral">Genres</h2>
+            <div className="flex gap-2 flex-wrap mt-2">
+              {fields.genre?.map((genre: any) => (
+                <Link
+                  key={genre.sys.id}
+                  href={`/genres/${genre.fields.name
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")}`}
+                  className="bg-neutral-light hover:bg-accent-pink text-neutral-dark py-1 px-3 rounded-full text-xs"
+                >
+                  {genre.fields.name}
+                </Link>
+              ))}
             </div>
+          </div>
+
 
             {/* Book Details */}
             <div className="mt-6 border-t border-neutral-light pt-6">

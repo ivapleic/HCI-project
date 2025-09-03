@@ -66,7 +66,6 @@ export default function MyBooks() {
     }
   };
 
-  // Pokretanje fetchBooks kad se promjene userId
   useEffect(() => {
     if (userId) {
       fetchBooks(userId);
@@ -86,6 +85,8 @@ export default function MyBooks() {
 
     // Optimističko ažuriranje UI-a - OVO JE JEDINO POTREBNO
     let movedBook: any;
+    
+    // Remove from old category
     if (oldCategory === "wantToRead") {
       movedBook = wantToRead.find((b) => b.sys.id === bookId);
       setWantToRead((prev) => prev.filter((b) => b.sys.id !== bookId));
@@ -95,9 +96,13 @@ export default function MyBooks() {
     } else if (oldCategory === "read") {
       movedBook = readBooks.find((b) => b.sys.id === bookId);
       setReadBooks((prev) => prev.filter((b) => b.sys.id !== bookId));
+    } else if (oldCategory === "favourites") {
+      movedBook = favourites.find((b) => b.sys.id === bookId);
+      setFavourites((prev) => prev.filter((b) => b.sys.id !== bookId));
     }
 
     if (movedBook) {
+      // Add to new category
       if (newCategory === "wantToRead") {
         setWantToRead((prev) => [...prev, movedBook]);
       } else if (newCategory === "currentlyReading") {
@@ -109,6 +114,13 @@ export default function MyBooks() {
         });
       } else if (newCategory === "read") {
         setReadBooks((prev) => [...prev, movedBook]);
+      } else if (newCategory === "favourites") {
+        setFavourites((prev) => {
+          if (!prev.some((b) => b.sys.id === movedBook.sys.id)) {
+            return [...prev, movedBook];
+          }
+          return prev;
+        });
       }
     }
 
@@ -121,8 +133,6 @@ export default function MyBooks() {
 
       if (!res.ok) throw new Error("Failed to update category");
       
-      // NE ponovno dohvaćati podatke - optimističko ažuriranje je dovoljno
-      // Samo resetiraj actionInProgress nakon uspjeha
     } catch (error) {
       console.error("Backend error:", error);
       // Vrati na početno stanje u slučaju greške
@@ -132,7 +142,7 @@ export default function MyBooks() {
     }
   };
 
-  // Funkcija za uklanjanje iz kategorije
+   // Funkcija za uklanjanje iz kategorije
   const handleRemoveFromCategory = async (
     bookId: string,
     category: Category
@@ -162,8 +172,6 @@ export default function MyBooks() {
 
       if (!res.ok) throw new Error("Failed to remove book from category");
       
-      // NE ponovno dohvaćati podatke - optimističko ažuriranje je dovoljno
-      // Samo resetiraj actionInProgress nakon uspjeha
     } catch (error) {
       console.error("Backend error:", error);
       // Vrati na početno stanje u slučaju greške
@@ -175,16 +183,20 @@ export default function MyBooks() {
 
   if (!userId) {
     return (
-      <div className="py-16 text-center text-lg text-red-600">
-        No user ID found. Please log in.
+      <div className="w-full mt-2 sm:mt-6 mb-0 sm:mb-20 px-0 md:px-20 md:mx-auto md:max-w-[1200px]">
+        <div className="sm:bg-neutral-white sm:rounded-2xl sm:shadow-lg p-6 text-center">
+          <p className="text-secondary-dark">No user ID found. Please log in.</p>
+        </div>
       </div>
     );
   }
 
   if (loading) {
     return (
-      <div className="py-16 text-center text-lg text-gray-700">
-        Loading your shelves…
+      <div className="w-full mt-2 sm:mt-6 mb-0 sm:mb-20 px-0 md:px-20 md:mx-auto md:max-w-[1200px]">
+        <div className="sm:bg-neutral-white sm:rounded-2xl sm:shadow-lg p-6 text-center">
+          <p className="text-neutral">Loading your shelves…</p>
+        </div>
       </div>
     );
   }
@@ -192,11 +204,14 @@ export default function MyBooks() {
   if (
     wantToRead.length === 0 &&
     currentlyReading.length === 0 &&
-    readBooks.length === 0
+    readBooks.length === 0 &&
+    favourites.length === 0
   ) {
     return (
-      <div className="py-16 text-center text-lg text-gray-700">
-        You have no books in your shelves yet.
+      <div className="w-full mt-2 sm:mt-6 mb-0 sm:mb-20 px-0 md:px-20 md:mx-auto md:max-w-[1200px]">
+        <div className="sm:bg-neutral-white sm:rounded-2xl sm:shadow-lg p-6 text-center">
+          <p className="text-neutral">You have no books in your shelves yet.</p>
+        </div>
       </div>
     );
   }
@@ -205,38 +220,38 @@ export default function MyBooks() {
     <div className="max-w-7xl mx-auto px-8 py-4">
       <h1 className="text-3xl font-bold my-4 text-[#593E2E]">Bookshelves</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
-        <BookshelfSection
-          title="Want To Read"
-          books={wantToRead}
-          type="wantToRead"
-          badgeColor="#EEE3D2"
-          badgeTextColor="#87715A"
-          onCategoryChange={handleCategoryChange}
-          onRemove={handleRemoveFromCategory}
-          emptyMessage="Nothing here yet…"
-          actionInProgress={actionInProgress}
-        />
+          <BookshelfSection
+            title="Want To Read"
+            books={wantToRead}
+            type="wantToRead"
+            badgeColor="#EEE3D2"
+            badgeTextColor="#87715A"
+            onCategoryChange={handleCategoryChange}
+            onRemove={handleRemoveFromCategory}
+            emptyMessage="Nothing here yet…"
+            actionInProgress={actionInProgress}
+          />
 
-        <BookshelfSection
-          title="Favourites"
-          books={favourites}
-          type="favourites"
-          badgeColor="#D6E3F3"
-          badgeTextColor="#6A7BA3"
-          onCategoryChange={handleCategoryChange}
-          onRemove={handleRemoveFromCategory}
-          emptyMessage="No favourites yet."
-          actionInProgress={actionInProgress}
-        />
+          <BookshelfSection
+            title="Favourites"
+            books={favourites}
+            type="favourites"
+            badgeColor="#D6E3F3"
+            badgeTextColor="#6A7BA3"
+            onCategoryChange={handleCategoryChange}
+            onRemove={handleRemoveFromCategory}
+            emptyMessage="No favourites yet."
+            actionInProgress={actionInProgress}
+          />
 
-        <CombinedReadingSection
-          currentlyReading={currentlyReading}
-          readBooks={readBooks}
-          onCategoryChange={handleCategoryChange}
-          onRemove={handleRemoveFromCategory}
-          actionInProgress={actionInProgress}
-        />
+          <CombinedReadingSection
+            currentlyReading={currentlyReading}
+            readBooks={readBooks}
+            onCategoryChange={handleCategoryChange}
+            onRemove={handleRemoveFromCategory}
+            actionInProgress={actionInProgress}
+          />
+        </div>
       </div>
-    </div>
   );
 }
