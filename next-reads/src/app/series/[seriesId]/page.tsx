@@ -84,8 +84,8 @@ const SeriesPage = () => {
     >
       <div className="grid xs:grid-cols-1 xs:gap-5 md:grid-cols-3 md:gap-10 w-full max-w-[1200px] mx-auto">
         {/* Glavni sadržaj */}
-        <div className="md:col-span-2 md:bg-white p-6 md:rounded-lg shadow-md">
-          <h1 className="text-2xl mb-1 font-semibold text-[#593E64]">
+        <div className="md:col-span-2 md:bg-neutral-white p-6 md:rounded-lg shadow-md">
+          <h1 className="text-2xl mb-1 font-semibold text-neutral-dark">
             {currentSeries.fields.title}
           </h1>
 

@@ -17,7 +17,7 @@ const ListDetailPage = () => {
 
   // Pagination state
   const [page, setPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 8;
 
   useEffect(() => {
     const fetchListAndTags = async () => {
@@ -46,7 +46,7 @@ const ListDetailPage = () => {
   }
 
   if (!list) {
-    return <div className="text-center text-red-500 mt-12">List not found.</div>;
+    return <div className="text-center text-secondary-dark mt-12">List not found.</div>;
   }
 
   // Pagination calculations
@@ -80,8 +80,8 @@ const ListDetailPage = () => {
     >
       <div className="grid grid-cols-1 md:grid-cols-3 md:gap-10 w-full max-w-[1200px] mx-auto">
         {/* Glavni sadržaj - zauzima 2/3 na desktopu */}
-        <div className="md:col-span-2 p-6 border-b border-[#D8D8D8] sm:border-none md:bg-white md:rounded-lg md:shadow-md">
-          <h2 className="text-3xl font-bold text-[#593E2E] mb-2">{list.fields.name}</h2>
+        <div className="md:col-span-2 p-6 sm:border-none md:bg-white md:rounded-lg md:shadow-md">
+          <h2 className="text-3xl font-bold text-neutral-dark mb-2">{list.fields.name}</h2>
 
           {/* Opis liste */}
           <div className="mb-5 prose max-w-none">

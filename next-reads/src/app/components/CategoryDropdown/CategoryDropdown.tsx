@@ -211,7 +211,7 @@ const toggleFavorite = async () => {
               aria-expanded={dropdownOpen}
             >
               <span className="truncate whitespace-nowrap">
-                {selectedCategory.label}
+                Add to shelf
               </span>
               <svg
                 className="ml-2 w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0"

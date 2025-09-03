@@ -1,0 +1,15 @@
+
+@theme {
+  --color-primary: #155449;
+  --color-primary-dark: #0f3a32;
+
+  --color-secondary: #B82B24;
+  --color-secondary-dark: #8f1f1b;
+
+  --color-neutral: #8C6954;
+  --color-neutral-dark: #593E2E;
+  --color-neutral-light: #F2F2F2;
+  --color-neutral-white: #FFFFFF;
+
+  --color-accent-pink: #F2CAB3;
+}

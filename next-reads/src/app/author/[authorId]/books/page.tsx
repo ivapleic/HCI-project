@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { getBooksByAuthorId, getAuthorById } from "../../_lib/AuthorApi";
 import BookCard from "../../../components/BookCard/BookCard";
 import Pagination from "../../../components/Pagination/Pagination";
+import Link from "next/link";
 
 const AuthorBooksPage = () => {
   const rawAuthorId = useParams().authorId;
@@ -30,7 +31,7 @@ const AuthorBooksPage = () => {
   }, [authorId]);
 
   if (loading) return <div className="text-center mt-10">Loading...</div>;
-  if (!author) return <div className="text-center text-red-500">Author not found</div>;
+  if (!author) return <div className="text-center text-secondary-dark">Author not found</div>;
 
   const { fields } = author;
 
@@ -48,8 +49,22 @@ const AuthorBooksPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 my-6 ">
-      <div className="sm:bg-white sm:rounded-2xl sm:shadow-lg py-6 sm:p-6">
-        <h2 className="text-2xl font-bold mb-6 text-[#593e2e]">All Books by {fields.fullName}</h2>
+      <div className="sm:bg-neutral-white sm:rounded-2xl sm:shadow-lg py-6 sm:p-6">
+        {/* Breadcrumb Navigation */}
+        <div className="mb-6 text-md text-neutral flex flex-wrap gap-2">
+          <Link
+            href={`/author/${authorId}`}
+            className="hover:underline text-neutral-dark"
+          >
+            {fields.fullName}
+          </Link>
+          <span className="text-neutral">{">"}</span>
+          <span className="text-neutral-dark font-medium">Books</span>
+        </div>
+
+        <h2 className="text-2xl font-bold mb-6 text-neutral-dark">
+          All Books by {fields.fullName}
+        </h2>
 
         <div className="grid grid-cols-1 gap-6">
           {currentBooks.map((book) => (

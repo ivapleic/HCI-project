@@ -44,10 +44,10 @@ const LoginPage = () => {
     }
   };
   return (
-    <div className="h-screen flex mt-20 items-start justify-center bg-gray-100">
-      <div className="bg-white p-8 shadow-lg rounded-lg w-full max-w-md">
+    <div className="h-screen flex mt-20 items-start justify-center sm:bg-gray-100">
+      <div className="sm:bg-white p-8 sm:shadow-lg sm:rounded-lg w-full max-w-md">
         <h1 className="text-3xl font-bold mb-5 text-[#593E2E] text-center">
-          Login
+          Welcome back!
         </h1>
 
         <form className="space-y-4" onSubmit={handleSubmit}>

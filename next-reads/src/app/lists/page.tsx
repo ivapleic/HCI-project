@@ -105,8 +105,8 @@ const ListsPage = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 sm:gap-6 w-full">
           {/* Glavni dio - paginirane liste (span 2) */}
-          <div className="md:col-span-2 sm:bg-white p-6 mb-0 sm:rounded-lg sm:shadow-md border-b border-[#D8D8D8] sm:border-none">
-            <h2 className="text-xl sm:text-2xl md:text-3xl text-[#593E2E] font-bold tracking-tight text-left mb-4">
+          <div className="md:col-span-2 sm:bg-neutral-white p-6 mb-0 sm:rounded-lg sm:shadow-md border-b border-[#D8D8D8] sm:border-none">
+            <h2 className="text-xl sm:text-2xl md:text-3xl text-neutral-dark font-bold tracking-tight text-left mb-4">
               Lists
             </h2>
 
@@ -120,24 +120,20 @@ const ListsPage = () => {
                   setSearchQuery(e.target.value);
                   if (searchError) setSearchError("");
                 }}
-                className="flex-1 p-2 border-white bg-white sm:bg-[#F9F3EE] rounded-md focus:outline-none focus:ring-2 focus:ring-[#593E2E]"
+                className="flex-1 p-2 border-neutral-white bg-neutral-white sm:bg-accent-pink rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-dark"
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               />
               <button
                 onClick={handleSearch}
-                className="px-4 py-2 hover:cursor-pointer bg-[#593E2E] text-white rounded-md hover:bg-[#8C6954] w-full sm:w-auto text-sm sm:text-base"
+                className="px-4 py-2 hover:cursor-pointer bg-neutral-dark text-neutral-white rounded-md hover:bg-neutral w-full sm:w-auto text-sm sm:text-base"
               >
                 Search
               </button>
             </div>
 
             {searchError && (
-              <p className="text-sm text-red-600 mb-4">{searchError}</p>
+              <p className="text-sm text-secondary-dark mb-4">{searchError}</p>
             )}
-
-            <p className="text-sm md:text-2xl text-[#593E2E] font-bold tracking-tight text-left my-4">
-              Popular lists
-            </p>
 
             {displayedLists.length > 0 ? (
               <>
@@ -175,7 +171,7 @@ const ListsPage = () => {
                 />
               </>
             ) : (
-              <p className="text-gray-600">No lists available for this tag.</p>
+              <p className="text-neutral">No lists available for this tag.</p>
             )}
           </div>
 

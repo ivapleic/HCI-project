@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #155449;
+  --color-primary-dark: #0f3a32;
+
+  --color-secondary: #B82B24;
+  --color-secondary-dark: #8f1f1b;
+
+  --color-neutral: #8C6954;
+  --color-neutral-dark: #593E2E;
+  --color-neutral-light: #F2F2F2;
+  --color-neutral-white: #FFFFFF;
+
+  --color-accent-pink: #F9F3EE;
+}
+
+
 :root {
   --background: #f2f2f2;
   --foreground: #171717;
@@ -18,6 +34,14 @@ body {
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+button {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  opacity: 0.9;
+}
 
 
 * {

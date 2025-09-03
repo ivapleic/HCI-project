@@ -110,7 +110,7 @@ const BooksList = () => {
                 book={{
                   id: book.sys.id,
                   title: book.fields.title,
-                  coverImageUrl: book.fields.coverImage?.fields.file.url,
+                  coverImageUrl: book.fields?.coverImage?.fields?.file?.url,
                   authorName: book.fields.author?.fields.fullName,
                   authorId: book.fields.author?.sys.id,
                   description: book.fields.description,
